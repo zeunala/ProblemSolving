@@ -10,11 +10,14 @@
 
 '''
 - S층을 기준으로 버튼을 늘려가는 BFS방식을 고안해볼 수 있다.
+* Fail/1st/00:36:38
+
+- 테스트 케이스에선 문제가 없었던 것으로 보아 복잡한 경우에서 상수로 설정했던 INF를 넘어서는 경우가 있어서 그런가 싶어 INF값을 늘려보았다.
 '''
 from collections import deque ## 큐 이용 위함
 
 F, S, G, U, D = map(int, input().split())
-INF = 10000000
+INF = 1000000000
 
 stair = [INF] * (F+1) # stair[i]는 i층으로 갈 때 눌러야하는 최소 버튼 수
 stair[S] = 0 # 시작점
