@@ -13,6 +13,10 @@
 * Fail/1st/00:36:38
 
 - 테스트 케이스에선 문제가 없었던 것으로 보아 복잡한 경우에서 상수로 설정했던 INF를 넘어서는 경우가 있어서 그런가 싶어 INF값을 늘려보았다.
+* Fail/2nd/00:43:43
+
+- 다시보니까 프린트문 출력할 때 오타가 있었다. 다시는 이런 실수를 안하도록 조심해야 겠다.
+* Pass/3rd/00:51:21
 '''
 from collections import deque ## 큐 이용 위함
 
@@ -39,6 +43,6 @@ while(stairQueue):
             stairQueue.append((a-D, b+1))
 
 if(stair[G]==INF):
-    print("user the stairs")
+    print("use the stairs")
 else:
     print(stair[G])
