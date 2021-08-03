@@ -15,22 +15,29 @@
 이 때 치즈 내부에 있는 공간은 외부 공기와 접촉하지 않는 것으로 가정한다는 것에 유의해야 한다.
 우선 외부 공기의 칸을 -100으로 바꾼 뒤 각 치즈에 대해 상하좌우 합이 -190미만이면 녹는것으로 판정해서 구현해보기로 하였다.
 * Fail/1st/00:32:19/RecursionError
+- RecursionError가 떠서 테스트한 결과 범위가 커지면 checkArea함수가 너무 깊게 호출되는 것 같다. 다른 방법으로 구현해야겠다.
+* Pass/2nd/00:43:27
+- DFS 구현시 재귀함수가 아닌 스택을 이용하게 바꾸었더니 에러가 해결되었다. line 29-30부분의 중복 방문된 경우 생략하는 코드는 없애도 결과에 이상 없었으니 참고하자.
 '''
 import sys
 
-def checkArea(arr, N, M, i, j): # 외부 공기의 칸을 -100으로 바꾸는 함수. 조건에서 맨 가장자리에는 치즈 없다고 가정했었다.
-    if arr[i][j]==-100: # 중복 방문된 경우 생략
-        return
-    
-    arr[i][j] = -100
-    if i+1<N and arr[i+1][j]==0:
-        checkArea(arr, N, M, i+1, j)
-    if j+1<M and arr[i][j+1]==0:
-        checkArea(arr, N, M, i, j+1)
-    if i-1>=0 and arr[i-1][j]==0:
-        checkArea(arr, N, M, i-1, j)
-    if j-1>=0 and arr[i][j-1]==0:
-        checkArea(arr, N, M, i, j-1)
+def checkArea(arr, N, M): # 외부 공기의 칸을 -100으로 바꾸는 함수. 조건에서 맨 가장자리에는 치즈 없다고 가정했었다.
+    stack = [(0,0)] # base case
+
+    while stack:
+        (i, j) = stack.pop()
+        if arr[i][j]==-100: # 중복 방문된 경우 생략
+            continue
+
+        arr[i][j] = -100
+        if i+1<N and arr[i+1][j]==0:
+            stack.append((i+1, j))
+        if j+1<M and arr[i][j+1]==0:
+            stack.append((i, j+1))
+        if i-1>=0 and arr[i-1][j]==0:
+            stack.append((i-1, j))
+        if j-1>=0 and arr[i][j-1]==0:
+            stack.append((i, j-1))
 
 def meltArea(arr, N, M): # 외부공기와 두변 이상 노출된 치즈를 녹이는 함수
     for i in range(N):
@@ -72,7 +79,7 @@ while True:
     if not inC: # 치즈가 다 없어졌으면 종료
         break
 
-    checkArea(arr, N, M, 0, 0)
+    checkArea(arr, N, M)
     meltArea(arr, N, M)
     resetArea(arr, N, M)
 
