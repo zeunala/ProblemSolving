@@ -15,6 +15,9 @@
 * Fail/1st/00:58:05/IndexError
 - if 2*i+3 >= len(expr) 부분에서 expr[2*i:2*i+3]가 혹시 걸려서 그런건가 싶어 한 번 고쳐보았다.
 * Fail/2nd/01:15:25/IndexError
+* Pass/3rd/01:27:06(search counterexample)
+- 아무리 고민해봐도 뭐가 틀린지 모르겠어서 반례를 검색한 결과 N=1일 때가 반례가 됨을 알 수 있었다.
+당연히 연산자가 한 개이상 있는 걸로 가정하고 짰었는데, 문제 조건을 꼭 제대로 읽어봐야 함을 배울 수 있었다.
 '''
 def evaluate(expr): # 원소 3개인 배열을 받아 연산결과를 배열로 리턴(ex. evaluate(['1','+','2'])=['3'])
     if expr[1] == "+":
@@ -50,4 +53,7 @@ def allSearch(expr, n, start): # expr은 계산해야할 문자열, n은 남은 
 
 N = int(input())
 expr = list(input())
-print(allSearch(expr, (N-1)//2, 0)[0])
+if N == 1:
+    print(expr[0])
+else:
+    print(allSearch(expr, (N-1)//2, 0)[0])
