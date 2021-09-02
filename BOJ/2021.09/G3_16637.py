@@ -13,6 +13,8 @@
 수식의 길이가 19이므로 연산자는 최대 9개, 9!=362880이므로 완전 탐색을 고려해볼 수 있다.
 다만 중첩된 괄호가 안된다고 했으므로 i번째 연산자로 연산을 했다면 그 다음부터는 i+2번째 연산자부터 괄호를 묶을 수 있게(먼저 계산이 가능하게) 해야한다.
 * Fail/1st/00:58:05/IndexError
+- if 2*i+3 >= len(expr) 부분에서 expr[2*i:2*i+3]가 혹시 걸려서 그런건가 싶어 한 번 고쳐보았다.
+* Fail/2nd/01:15:25/IndexError
 '''
 def evaluate(expr): # 원소 3개인 배열을 받아 연산결과를 배열로 리턴(ex. evaluate(['1','+','2'])=['3'])
     if expr[1] == "+":
@@ -23,7 +25,7 @@ def evaluate(expr): # 원소 3개인 배열을 받아 연산결과를 배열로 
         return [str(int(expr[0])*int(expr[2]))]
 
 def allSearch(expr, n, start): # expr은 계산해야할 문자열, n은 남은 연산자 수. 괄호 사용시 start번째의 연산자부터 사용가능(0번째 연산자부터 시작한다 했을 때)
-    
+
     if n == 1:
         return evaluate(expr)
     maximum = -(2**31)
@@ -37,7 +39,7 @@ def allSearch(expr, n, start): # expr은 계산해야할 문자열, n은 남은 
 
     for i in range(max(start, 1), n): # i번째 연산자에 대해 괄호가 묶인 경우(i번째 연산자는 str[2i+1]에 위치한다.)
         if 2*i+3 >= len(expr): # 마지막 연산자일 경우에 대한 처리
-            temp = allSearch(expr[:2*i]+evaluate(expr[2*i:2*i+3]), n-1, i+1)
+            temp = allSearch(expr[:2*i]+evaluate(expr[2*i:]), n-1, i+1)
         else:
             temp = allSearch(expr[:2*i]+evaluate(expr[2*i:2*i+3])+expr[2*i+3:], n-1, i+1) # i번째 괄호 연산시 i+2번째부터 괄호가능(근데 연산자 하나 없어지므로 새 식에서는 i+1이 기준)
 
