@@ -19,6 +19,8 @@
 '''
 - 1번선수는 4번타자 고정이므로 나머지 8명만 최대 득점이 나오게 배치하면 된다. 8!=40320이므로 완전 탐색을 고려할 수 있다.
 * Fail/1st/00:48:17/TimeOver
+- 최적화가 좀 더 필요로 한 듯하다.
+* Fail/2nd/01:20:18/TimeOver
 '''
 import sys
 from itertools import permutations
@@ -28,30 +30,23 @@ def checkCase(playerOrder, scoreArr, turn): # playerOrder는 선수 순서, scor
     currentPlayer = -1 # 현재 치는 선수순서 (0번째부터 시작)
 
     for i in range(turn):
-        field = 0 # 이진법으로 보아 000 > 주자 없음, 001 > 주자 1루, 110 > 주자 2/3루와 같이 본다.
+        field = 1 # 이진법으로 보아 0001 > 주자 없음, 0011 > 주자 1루, 1101 > 주자 2/3루와 같이 본다.
         out = 0 # 아웃카운트
 
         while out < 3:
-            currentPlayer += 1
-            if currentPlayer == 9:
-                currentPlayer = 0
-
+            currentPlayer = ((currentPlayer + 1) % 9)
+            
             hitResult = scoreArr[i][playerOrder[currentPlayer]-1] # 현재 선수의 hit 결과
             if hitResult == 0:
                 out += 1
             else:
                 field = field << hitResult
-                field += (1 << (hitResult-1)) # ex. 000에서 1루타시 001, 010에서 2루타시 01000 > 01010, 111에서 홈런시 1111000
+                field += 1 # ex. 0001에서 1루타시 00011, 0101에서 2루타시 010101,  111에서 홈런시 11110001
 
-                if (field >> 3) % 2 == 1:
-                    resultScore += 1
-                if (field >> 4) % 2:
-                    resultScore += 1
-                if (field >> 5) % 2:
-                    resultScore += 1
-                if (field >> 6) % 2:
-                    resultScore += 1
-                field = field % 8
+        field = field >> 4
+        while field > 0:
+            resultScore += field % 2
+            field = field >> 1
     
     return resultScore
         
