@@ -23,15 +23,15 @@
 * Fail/2nd/01:20:18/TimeOver
 - 첫번째 경우보단 테스트 케이스를 더 통과하였지만 아직 부족하다. hitDP배열을 추가하여 hitDP[a][b]를 필드 a에서 b루타를 쳤을 때 필드와 획득점수를 저장하도록 해보자.
 * Fail/3rd/01:39:12/TimeOver
+- 좀 더 최적화를 시도해보았다.
+* Fail/4th/02:07:08/TimeOver
 '''
 import sys
 from itertools import permutations
 
 hitDP = [[(0, 0) for _ in range(5)] for _ in range(8)] # hitDP[a][b]는 필드 a에서 b루타를 쳤을 때 필드와 획득점수를 저장함
 
-def checkCase(playerOrder, scoreArr, turn): # playerOrder는 선수 순서, scoreArr는 입력으로 주는 점수, turn은 총 이닝 수 해당 경우에 대한 점수를 리턴한다.
-    global hitDP
-
+def checkCase(playerOrder): # playerOrder는 선수 순서, scoreArr는 입력으로 주는 점수, turn은 총 이닝 수 해당 경우에 대한 점수를 리턴한다.
     resultScore = 0
     currentPlayer = -1 # 현재 치는 선수순서 (0번째부터 시작)
 
@@ -46,8 +46,7 @@ def checkCase(playerOrder, scoreArr, turn): # playerOrder는 선수 순서, scor
             if hitResult == 0:
                 out += 1
             else:
-                (newField, getScore) = hitDP[field][hitResult]
-                field = newField
+                (field, getScore) = hitDP[field][hitResult]
                 resultScore += getScore
     
     return resultScore
@@ -79,7 +78,7 @@ for i in range(8): # i는 현재 필드
         hitDP[i][j] = (resultField, resultScore)    
 
 for e in playerOrder:
-    temp = checkCase(e[:3]+(1,)+e[3:], scoreArr, turn) # 각 경우마다 1번선수를 4번자리에 넣고 checkCase 함수를 돌린다.
+    temp = checkCase(e[:3]+(1,)+e[3:]) # 각 경우마다 1번선수를 4번자리에 넣고 checkCase 함수를 돌린다.
     if temp > maximum:
         maximum = temp
 
