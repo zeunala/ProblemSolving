@@ -21,16 +21,22 @@
 * Fail/1st/00:48:17/TimeOver
 - 최적화가 좀 더 필요로 한 듯하다.
 * Fail/2nd/01:20:18/TimeOver
+- 첫번째 경우보단 테스트 케이스를 더 통과하였지만 아직 부족하다. hitDP배열을 추가하여 hitDP[a][b]를 필드 a에서 b루타를 쳤을 때 필드와 획득점수를 저장하도록 해보자.
+* Fail/3rd/01:39:12/TimeOver
 '''
 import sys
 from itertools import permutations
 
+hitDP = [[(0, 0) for _ in range(5)] for _ in range(8)] # hitDP[a][b]는 필드 a에서 b루타를 쳤을 때 필드와 획득점수를 저장함
+
 def checkCase(playerOrder, scoreArr, turn): # playerOrder는 선수 순서, scoreArr는 입력으로 주는 점수, turn은 총 이닝 수 해당 경우에 대한 점수를 리턴한다.
+    global hitDP
+
     resultScore = 0
     currentPlayer = -1 # 현재 치는 선수순서 (0번째부터 시작)
 
     for i in range(turn):
-        field = 1 # 이진법으로 보아 0001 > 주자 없음, 0011 > 주자 1루, 1101 > 주자 2/3루와 같이 본다.
+        field = 0 # 이진법으로 보아 000 > 주자 없음, 001 > 주자 1루, 110 > 주자 2/3루와 같이 본다.
         out = 0 # 아웃카운트
 
         while out < 3:
@@ -40,22 +46,37 @@ def checkCase(playerOrder, scoreArr, turn): # playerOrder는 선수 순서, scor
             if hitResult == 0:
                 out += 1
             else:
-                field = field << hitResult
-                field += 1 # ex. 0001에서 1루타시 00011, 0101에서 2루타시 010101,  111에서 홈런시 11110001
-
-        field = field >> 4
-        while field > 0:
-            resultScore += field % 2
-            field = field >> 1
+                (newField, getScore) = hitDP[field][hitResult]
+                field = newField
+                resultScore += getScore
     
     return resultScore
-        
+
 playerOrder = list(permutations([2,3,4,5,6,7,8,9])) # 여기에 경우의 수가 들어가며, 각 경우마다 1번을 4번자리에 넣으면 된다.
 maximum = 0
 turn = int(input()) # 이닝 수
 scoreArr = [] # 각 이닝별 선수들의 결과
 for i in range(turn):
     scoreArr.append(list(map(int, sys.stdin.readline().rstrip().split())))
+
+# hitDP 세팅
+for i in range(8): # i는 현재 필드
+    for j in range(1, 5): # j는 몇 루타인지
+        resultField = 0
+        resultScore = 0
+
+        field = i
+        field = field << j
+        field += (1 << (j-1))
+
+        resultField = field % 8
+
+        field = field >> 3
+        while field > 0:
+            resultScore += field % 2
+            field = field >> 1
+        
+        hitDP[i][j] = (resultField, resultScore)    
 
 for e in playerOrder:
     temp = checkCase(e[:3]+(1,)+e[3:], scoreArr, turn) # 각 경우마다 1번선수를 4번자리에 넣고 checkCase 함수를 돌린다.
