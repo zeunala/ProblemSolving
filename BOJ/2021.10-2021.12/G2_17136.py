@@ -13,6 +13,9 @@
 우선 0행부터 차례로 스캔하며 1을 만날 경우 5*5->4*4->...->1*1 순으로 색종이를 덮을 수 있는지 DFS로 모두 탐색해보자.
 만약 큰 색종이로 덮을 수 있다고 해도 더 작은 걸로 덮었을 때 결국 총 색종이 수가 줄어들 수도 있으므로 주의해야 한다.
 * Fail/1st/00:37:39/TimeOver
+- 모두 1이 되는 경우 등에서 5*5~1*1을 모두 다 탐색하려고 하니 시간이 너무 오래 걸린다.
+큰 색종이를 먼저 쓰되 5*5를 전체 필드에서 덮고 -> 남은 필드에서 4*4를 전체 찾는 식으로 진행해보자.
+* Fail/2nd/00:43:48/TimeOver
 '''
 from copy import deepcopy
 
@@ -34,43 +37,50 @@ def checkArea(arr, one, two, three, four, five): # arr과 현재까지 쓴 색�
     for i in range(10):
         for j in range(10):
             if arr[i][j] == 1: # 종이로 덮어야 하는 부분 발견
-                minPaper = 999
                 if five < 5:
                     newArr = canUse(arr, 5, i, j)
                     if newArr != None:
                         newResult = checkArea(newArr, one, two, three, four, five + 1)
-                        if newResult != -1 and minPaper > newResult:
-                            minPaper = newResult
+                        if newResult != -1:
+                            return newResult
+    for i in range(10):
+        for j in range(10):
+            if arr[i][j] == 1:
                 if four < 5:
                     newArr = canUse(arr, 4, i, j)
                     if newArr != None:
                         newResult = checkArea(newArr, one, two, three, four + 1, five)
-                        if newResult != -1 and minPaper > newResult:
-                            minPaper = newResult
+                        if newResult != -1:
+                            return newResult
+    for i in range(10):
+        for j in range(10):
+            if arr[i][j] == 1:
                 if three < 5:
                     newArr = canUse(arr, 3, i, j)
                     if newArr != None:
                         newResult = checkArea(newArr, one, two, three + 1, four, five)
-                        if newResult != -1 and minPaper > newResult:
-                            minPaper = newResult
+                        if newResult != -1:
+                            return newResult
+    for i in range(10):
+        for j in range(10):
+            if arr[i][j] == 1:
                 if two < 5:
                     newArr = canUse(arr, 2, i, j)
                     if newArr != None:
                         newResult = checkArea(newArr, one, two + 1, three, four, five)
-                        if newResult != -1 and minPaper > newResult:
-                            minPaper = newResult
+                        if newResult != -1:
+                            return newResult
+    for i in range(10):
+        for j in range(10):
+            if arr[i][j] == 1:
                 if one < 5:
                     newArr = canUse(arr, 1, i, j)
                     if newArr != None:
                         newResult = checkArea(newArr, one + 1, two, three, four, five)
-                        if newResult != -1 and minPaper > newResult:
-                            minPaper = newResult
+                        if newResult != -1:
+                            return newResult
+                return -1 # 색종이로 덮을 수 없는 경우 여기 도달한다.
                 
-                if minPaper == 999: # 한번도 갱신 안됨 - 즉 색종이를 덮을 수 없음
-                    return -1
-                else:
-                    return minPaper
-
     return one + two + three + four + five
 
 arr = []
