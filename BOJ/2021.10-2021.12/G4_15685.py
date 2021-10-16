@@ -22,6 +22,8 @@ x와 y는 드래곤 커브의 시작 점, d는 시작 방향, g는 세대이다.
 시작점과 끝점만 잘 알아두었다가 모든 점에 대해서 각각 끝점에 대해 시계방향 90도 회전시키고, 이 때 시작점을 이동시킨게 새로운 끝점이 된다.
 우선 A점에 대해 B점을 시계방향으로 90도 회전 시켰을 때의 좌표를 출력하는 함수를 만들고, 이를 반복호출시키자.
 * Fail/1st/01:02:39/IndexError
+- 그리는 도중에 IndexError가 나는 경우로 보이는데 일단 좌표들을 배열로 옮길 때 범위를 지정해보자.
+* Fail/2nd/01:04:22
 '''
 def turn90(origin, target): # origin 변수 기준으로 target을 시계방향으로 90도 돌린 좌표 리턴
     temp = (target[0] - origin[0], target[1] - origin[1]) # origin만큼 빼서 원점에 대해 시계방향 90도 돌리고 다시 더할 것임
@@ -63,7 +65,8 @@ def drawDragon(x, y, d, g): # 드래곤 커브 정보가 주어지면 꼭짓점�
     resultArr = [[0 for _ in range(100)] for _ in range(100)] # 여기에 allPoint의 점들을 다 1로 표시할 것임
     while allPoint:
         e = allPoint.pop()
-        resultArr[e[1]][e[0]] = 1
+        if e[1] < 100 and e[0] < 100:
+            resultArr[e[1]][e[0]] = 1
 
     return resultArr
 
