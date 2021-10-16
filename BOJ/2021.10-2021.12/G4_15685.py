@@ -24,6 +24,12 @@ x와 y는 드래곤 커브의 시작 점, d는 시작 방향, g는 세대이다.
 * Fail/1st/01:02:39/IndexError
 - 그리는 도중에 IndexError가 나는 경우로 보이는데 일단 좌표들을 배열로 옮길 때 범위를 지정해보자.
 * Fail/2nd/01:04:22
+- x,y범위가 0이상 100이하라서 총 격자가 100*100이 아니라 101*101이다. 처음에 IndexError 난 것도 배열을 [100][100]까지만 만들어서 난 것으로 추측된다.
+* Pass/3rd/01:13:05
+- 문제를 풀고 다른 사람의 풀이를 찾아보니 규칙을 발견해서 푸는 방법도 있음을 알게 되었다.
+방향을 입력에서의 조건처럼 숫자로 지정한다고 했을 때 0 -> 0 1 -> 0 1 2 1 -> 0 1 2 1 2 3 2 1 과 같이
+이전 세대의 방향 정보를 뒤집고 거기에 1을 더한 값을 추가해주면 되는 것이다(4에 1더한 경우는 0으로 계산)
+앞으로 이러한 형식의 문제가 나올 때 규칙성같은 것이 혹시 없을지 먼저 찾아보고 접근해야겠다.
 '''
 def turn90(origin, target): # origin 변수 기준으로 target을 시계방향으로 90도 돌린 좌표 리턴
     temp = (target[0] - origin[0], target[1] - origin[1]) # origin만큼 빼서 원점에 대해 시계방향 90도 돌리고 다시 더할 것임
@@ -32,7 +38,7 @@ def turn90(origin, target): # origin 변수 기준으로 target을 시계방향�
     result = (tempTurn[0] + origin[0], tempTurn[1] + origin[1])
     return result
 
-def drawDragon(x, y, d, g): # 드래곤 커브 정보가 주어지면 꼭짓점들을 1로, 나머지를 0으로 표시한 100*100 배열 리턴 
+def drawDragon(x, y, d, g): # 드래곤 커브 정보가 주어지면 꼭짓점들을 1로, 나머지를 0으로 표시한 101*101 배열 리턴 
     start = (x, y)
     end = (0, 0)
 
@@ -62,26 +68,25 @@ def drawDragon(x, y, d, g): # 드래곤 커브 정보가 주어지면 꼭짓점�
         allPoint = newAllPoint[:]
         end = newEnd
 
-    resultArr = [[0 for _ in range(100)] for _ in range(100)] # 여기에 allPoint의 점들을 다 1로 표시할 것임
+    resultArr = [[0 for _ in range(101)] for _ in range(101)] # 여기에 allPoint의 점들을 다 1로 표시할 것임
     while allPoint:
         e = allPoint.pop()
-        if e[1] < 100 and e[0] < 100:
-            resultArr[e[1]][e[0]] = 1
+        resultArr[e[1]][e[0]] = 1
 
     return resultArr
 
 N = int(input()) # 드래곤 커브의 개수
-field = [[0 for _ in range(100)] for _ in range(100)]
+field = [[0 for _ in range(101)] for _ in range(101)]
 for i in range(N):
     x, y, d, g = map(int, input().split())
     extraField = drawDragon(x, y, d, g)
-    for i2 in range(100):
-        for j2 in range(100):
+    for i2 in range(101):
+        for j2 in range(101):
             field[i2][j2] += extraField[i2][j2]
     
 answer = 0
-for i in range(99):
-    for j in range(99):
+for i in range(100):
+    for j in range(100):
         if field[i][j] * field[i][j+1] * field[i+1][j] * field[i+1][j+1] > 0:
             answer += 1
 
