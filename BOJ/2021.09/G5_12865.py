@@ -16,6 +16,11 @@
 - 한참 고민해보니 dp[i][0]을 0부터 시작하다보니 가치가 0인 물건에 대해서도 dp[i-X][0]이 0보다 클 경우 넣고 보는 문제가 있었다.
 아예 가치가 0인 경우엔 무게 초과시와 마찬가지로 걸러버리자.
 * Fail/2nd/00:55:15
+-- dp를 무게에 대해서만 갱신하지 않고 첫번째 물건에 대해서 무게별로 적용하고, n번째 물건에 대해서 적용하는 식의 처리를 해야 최적의 해를 구할 수 있다.
+* Pass/3rd/01:12:45(use PyPy3)
+- 접근방법은 맞으나 Python3로는 아슬아슬하게 시간초과가 나는 것으로 보아 최적화가 좀 더 요구될 것으로 보인다.
+다른 풀이를 찾아보니 애초에 j<arr[i][0]일 경우 dp[i-1][j]값을 그대로 취하고 j>=arr[i][0], 즉 해당 물건을 넣을 수 있을 때만
+max(dp[i][j-1], dp[i-1][j], dp[i-1][j-arr[i][0]]+arr[i][1]) 값을 대입시키도록 했었다면 연산을 더 줄일 수 있을 것이다.
 '''
 
 import sys
@@ -25,17 +30,18 @@ arr = [] # [무게, 가치]들의 배열들
 for i in range(N):
     arr.append(list(map(int, sys.stdin.readline().rstrip().split())))
 
-dp = [[0 , []] for _ in range(K+1)] # dp[N][0]은 최대 무게제한이 N일 때의 최대 가치합이다. dp[N][1]은 그 때의 넣은 물건들의 인덱스이다.
-for i in range(1, K+1):
-    for j in range(len(arr)):
-        if i < arr[j][0] or arr[j][1] == 0: # 무게 초과시 또는 가치 0인 경우 무시
-            continue
-        elif (dp[i-arr[j][0]][0]+arr[j][1] > dp[i][0]) and (j not in dp[i-arr[j][0]][1]): # 기존 최대 가치합보다 이 물건을 넣었을 때 가치합 최대일 때(이 때 물건 중복해서 들어가면 안 됨)
-            dp[i][0] = dp[i-arr[j][0]][0] + arr[j][1]
-            dp[i][1] = dp[i-arr[j][0]][1] + [j]
-        
-    if dp[i][0] < dp[i-1][0]: # 이전 무게가 오히려 더 나은 경우
-        dp[i][0] = dp[i-1][0]
-        dp[i][1] = dp[i-1][1]
+dp = [[0 for _ in range(K+1)] for _ in range(N)] # dp[a][b]는 a번째(0부터 시작) 물건까지 있을 때 최대무게 b일때의 최대 가치합이다.
 
-print(dp[K][0])
+for j in range(1, K+1): # 첫번째 물건에 대한 처리 (무게가 된다면 일단 넣고 본다)
+    if j >= arr[0][0]:
+        dp[0][j] = arr[0][1]
+
+for i in range(1, N): # 이후 물건에 대한 처리 (직전 물건 정보를 이용해 이 물건 넣었을 때의 최대가치합 계산)
+    for j in range(1, K+1):
+        dp[i][j] = max(dp[i][j-1], dp[i-1][j]) # 초기값
+        if j >= arr[i][0]:
+            temp = dp[i-1][j-arr[i][0]] + arr[i][1] # dp[i-1]는 이 물건을 안 넣을 때의 최대가치합이므로, 여기에 이 물건 가치 더할 때 갱신여부 확인
+            if temp > dp[i][j]:
+                dp[i][j] = temp
+
+print(dp[N-1][K])
