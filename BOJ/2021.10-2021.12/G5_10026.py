@@ -12,7 +12,12 @@
 '''
 - N이 크지 않으므로 BFS나 DFS 등을 사용하여 총 몇 개의 구역이 가능한지 하나하나 세면 될 것이다.
 * Fail/1st/00:15:54/RecursionError
+- 경우에 따라 recursion이 커져서 recursionError가 발생한 것으로 보이며, limit를 늘려줘서 해결가능할 것으로 보인다.
+* Pass/2nd/00:21:19
 '''
+import sys
+sys.setrecursionlimit(10000) #! RecursionError 방지
+
 def dfs(arr, N, i, j): # 방문한 곳을 X로 칠하며 색깔이 같은 인접한 곳들을 탐색한다.
     if arr[i][j] == "X":
         return
