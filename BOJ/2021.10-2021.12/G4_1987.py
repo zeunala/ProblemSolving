@@ -11,10 +11,10 @@
 
 '''
 - R과 C가 크지 않아서 모든 경우의 수를 다 체크해도 될 것으로 보인다. DFS방식으로 모두 탐색해보자.
-Fail/1st/00:35:58/TimeOver
+* Fail/1st/00:35:58/TimeOver
+- 생각해보면 어차피 같은 칸은 알파벳도 같으므로 visited 배열을 둘 필요 없이 알파벳만 체크하면 될 것이다.
+* Pass/2nd/00:48:26(use PyPy3)
 '''
-from copy import deepcopy
-
 maxValue = 0
 
 def checkMaxValue(N): # 현재 maxValue보다 인자로 준 값이 더 클 경우 갱신
@@ -22,26 +22,24 @@ def checkMaxValue(N): # 현재 maxValue보다 인자로 준 값이 더 클 경�
     if maxValue < N:
         maxValue = N
 
-def dfs(mapArr, R, C, pos, N, visited, alphaVisited):
-    if visited[pos[0]][pos[1]] or alphaVisited[mapArr[pos[0]][pos[1]]]:
+def dfs(mapArr, R, C, pos, N, alphaVisited):
+    if alphaVisited[mapArr[pos[0]][pos[1]]]:
         return
     
-    tempVisited = deepcopy(visited)
-    tempVisited[pos[0]][pos[1]] = True
-    tempAlphaVisited = deepcopy(alphaVisited)
+    tempAlphaVisited = alphaVisited[:]
     tempAlphaVisited[mapArr[pos[0]][pos[1]]] = True
     
     if pos[0] - 1 >= 0 and visited[pos[0] - 1][pos[1]] == False and alphaVisited[mapArr[pos[0] - 1][pos[1]]] == False:
-        dfs(mapArr, R, C, (pos[0] - 1, pos[1]), N + 1, tempVisited, tempAlphaVisited)
+        dfs(mapArr, R, C, (pos[0] - 1, pos[1]), N + 1, tempAlphaVisited)
     
     if pos[0] + 1 < R and visited[pos[0] + 1][pos[1]] == False and alphaVisited[mapArr[pos[0] + 1][pos[1]]] == False:
-        dfs(mapArr, R, C, (pos[0] + 1, pos[1]), N + 1, tempVisited, tempAlphaVisited)
+        dfs(mapArr, R, C, (pos[0] + 1, pos[1]), N + 1, tempAlphaVisited)
     
     if pos[1] - 1 >= 0 and visited[pos[0]][pos[1] - 1] == False and alphaVisited[mapArr[pos[0]][pos[1] - 1]] == False:
-        dfs(mapArr, R, C, (pos[0], pos[1] - 1), N + 1, tempVisited, tempAlphaVisited)
+        dfs(mapArr, R, C, (pos[0], pos[1] - 1), N + 1, tempAlphaVisited)
         
     if pos[1] + 1 < C and visited[pos[0]][pos[1] + 1] == False and alphaVisited[mapArr[pos[0]][pos[1] + 1]] == False:
-        dfs(mapArr, R, C, (pos[0], pos[1] + 1), N + 1, tempVisited, tempAlphaVisited)
+        dfs(mapArr, R, C, (pos[0], pos[1] + 1), N + 1, tempAlphaVisited)
     
     checkMaxValue(N)
     
@@ -64,6 +62,6 @@ for i in range(R):
 visited = [[False for _ in range(C)] for _ in range(R)]
 alphaVisited = [False] * 26
 
-dfs(mapArr, R, C, (0, 0), 1, deepcopy(visited), deepcopy(alphaVisited))
+dfs(mapArr, R, C, (0, 0), 1, alphaVisited[:])
         
 print(maxValue)
