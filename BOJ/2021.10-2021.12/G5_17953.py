@@ -14,6 +14,8 @@ j (2 ≤ j ≤ M + 1)번째 줄의 i (1 ≤ i ≤ N)번째 자연수 Vij는 i번
 '''
 - DP 문제로 보인다. 첫번째날 부터 하나하나 계산해보자.
 * Fail/1st/00:12:15/ValueError
+- 디저트가 한 종류일 때 max의 인자가 empty string이 되어 에러가 난다. 이 부분을 처리해보자.
+* Pass/2nd/00:15:34
 '''
 import sys
 N, M = map(int, input().split()) # N: 날짜 수, M: 디저트 종류 수
@@ -27,6 +29,6 @@ for j in range(M):
     
 for i in range(1, N):
     for j in range(M):
-        dp[i][j] = max(max(dp[i-1][:j]+dp[i-1][j+1:]) + valueArr[j][i], dp[i-1][j] + valueArr[j][i] // 2)
+        dp[i][j] = max(max(dp[i-1][:j]+dp[i-1][j+1:]+[-999999999]) + valueArr[j][i], dp[i-1][j] + valueArr[j][i] // 2)
         
 print(max(dp[N-1]))
