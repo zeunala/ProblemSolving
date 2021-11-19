@@ -14,6 +14,8 @@
 '''
 - 문제에 적혀있는 그대로 구현만 하면 되는 문제이다.
 * Fail/1st/00:08:42/IndexError
+- allTask가 비었을 때 처리를 잊은 것으로 보인다.
+* Pass/2nd/00:09:40
 '''
 import sys
 
@@ -21,11 +23,12 @@ def oneMinute():
     global currentTime, totalScore, allTask
     currentTime += 1
     
-    (a, b) = allTask.pop()
-    if a - 1 > 0:
-        allTask.append((a - 1, b))
-    else:
-        totalScore += b
+    if allTask:
+        (a, b) = allTask.pop()
+        if a - 1 > 0:
+            allTask.append((a - 1, b))
+        else:
+            totalScore += b
 
 totalScore = 0
 currentTime = 0
