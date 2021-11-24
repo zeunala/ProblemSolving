@@ -12,6 +12,7 @@ N값이 첫 번째 줄에 입력된다. (1 ≤ N < 100,000, N은 홀수)
 '''
 - 주언이가 작은 수부터 내면 사장은 그보다 큰 수 중 최솟값을 내도록 한다. (N+1)/2번까지 반복할 수 있다면 YES, 아니면 NO를 출력한다.
 * Fail/1st/00:13:17/IndexError
+* Pass/2nd/00:16:39
 '''
 import sys
 N = int(input())
@@ -27,12 +28,16 @@ for i in range((N+1)//2):
     targetNumber = arr1[i] # 주언이가 낸 수
     arr2Idx += 1
     
-    while arr2[arr2Idx] <= targetNumber:
-        arr2Idx += 1
+    while True:
         if arr2Idx >= len(arr2): # 사장이 더 큰 수를 낼 수 없는 경우
             answer = "NO"
             break
         
+        if arr2[arr2Idx] > targetNumber:
+            break
+        else:
+            arr2Idx += 1
+            
     if answer == "NO":
         break
 
