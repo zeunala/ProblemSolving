@@ -13,6 +13,8 @@
 '''
 - 필드가 4*4밖에 되지 않으므로 문제 그대로 구현하면 되는 것으로 보인다.
 * Fail/1st/02:46:24
+- 상어가 이동할 곳을 결정하고 물고기가 움직이게 했는데, 순서가 바뀌어야 상어가 올바른 물고기 지역으로 이동할 수 있다.
+* Pass/2nd/02:53:39
 '''
 from copy import deepcopy
 
@@ -67,6 +69,8 @@ def sharkMove(field, sharkPos, currentScore, fishPosArr): # 상어 이동 후 �
     canMovePos = [] # 상어가 이동가능한 곳
     nextPos = sharkPos
     
+    field = fishMove(field, fishPosArr) # 물고기 이동
+    
     while True:
         nextPos = moveByDirection(nextPos, field[sharkPos[0]][sharkPos[1]][1])
         if field[nextPos[0]][nextPos[1]][0] == -1: # 벽이라면 더 이상 이동 불가
@@ -76,10 +80,7 @@ def sharkMove(field, sharkPos, currentScore, fishPosArr): # 상어 이동 후 �
             
     if len(canMovePos) == 0: # 상어가 더 이상 진행 불가한 경우 지금까지의 점수 리턴
         return currentScore
-    
-    # 상어가 이동할 수 있는 경우 물고기 이동 후 상어가 이동한다
-    field = fishMove(field, fishPosArr) # 물고기 이동
-    
+
     maxScore = currentScore
     for e in canMovePos:
         tempFishPosArr = fishPosArr[:]
