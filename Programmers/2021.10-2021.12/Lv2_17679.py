@@ -5,6 +5,8 @@
 이 때 지워지는 블록이 겹칠 수 있으므로 각 단계마다 블록을 한 번에 지워야 한다.
 여기서는 지워지는 블록을 X로 표시하였다.
 * Fail/1st/00:21:44
+- 2개 이상의 블록이 한 번에 내려와야 하는 경우의 반례가 있어 수정하였다.
+* Pass/2nd/00:24:35
 '''
 from copy import deepcopy
 
@@ -35,8 +37,12 @@ def solution(m, n, board):
                     
         # 빈 공간을 채움
         for j in range(n):
-            for i in range(m - 1):
+            i = 0
+            while i < m - 1:
                 if board[i][j] != 'X' and board[i+1][j] == 'X':
                     board[i][j], board[i+1][j] = board[i+1][j], board[i][j]
+                    i = 0 # 내려오는 블록이 있을 경우 첫 줄부터 다시 확인
+                else:
+                    i += 1
                     
     return answer
