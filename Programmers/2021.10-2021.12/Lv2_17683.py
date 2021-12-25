@@ -5,6 +5,8 @@
 이후 조건에 일치하는 음악들 중 우선순위가 가장 높은 걸 반환하면 된다.
 이 때 C와 C#등을 구분하기 위해 기존 C를 C0으로 변환한다.
 * Fail/1st/00:34:37
+- 조건 일치 음악이 여러 개일 때 시간이 제일 긴 것을 반환해야 하는데 이 부분을 실수하여 수정하였다.
+* Pass/2nd/00:36:02
 '''
 def getTime(start, end): # 음악 길이를 반환
     startHour, startMinute = map(int, start.split(":"))
