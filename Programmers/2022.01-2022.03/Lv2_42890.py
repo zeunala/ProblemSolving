@@ -7,6 +7,8 @@
 * Fail/1st/00:28:20
 - dfs 함수의 잘못된 부분을 수정하였다.
 * Fail/2nd/00:39:37
+- 후보 키의 개수를 묻는 문제였는데 후보 키의 최대 개수로 잘못 알고 푼 것을 발견하고 수정하였다.
+* Pass/3rd/00:50:10
 '''
 
 from itertools import product
@@ -60,6 +62,6 @@ def solution(relation):
             if (e[:i] + e[i+1:]) in columnArr:
                 isMinimal = False
         if isMinimal:
-            return len(e)
+            answer += 1
     
-    return 0
+    return answer
