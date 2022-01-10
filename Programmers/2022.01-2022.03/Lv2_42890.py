@@ -5,11 +5,16 @@
 각 속성들에 대한 경우의 수에 대하여 중복되는게 없으면 후보로 오르고,
 이들중 최소성을 만족하면서 후보 키의 최대 개수인 것을 선택한다.
 * Fail/1st/00:28:20
+- dfs 함수의 잘못된 부분을 수정하였다.
+* Fail/2nd/00:39:37
 '''
 
 from itertools import product
 
 def checkDuplicate(relation, column):
+    if column == []: # column이 빈 경우에 대한 예외처리
+        return False
+    
     arr = []
     for e in relation:
         temp = []
@@ -28,7 +33,7 @@ def checkDuplicate(relation, column):
 columnArr = [] # 유일성을 만족하는 column쌍들의 집합
 
 def dfs(relation, arr, start, end): # 만약 열이 5개 있다면 start = 0, end = 4에서 시작
-    if start == end:
+    if start > end:
         if checkDuplicate(relation, arr):
             global columnArr
             columnArr.append(arr)
