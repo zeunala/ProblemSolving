@@ -1,0 +1,34 @@
+'''
+문자열 압축
+
+- s의 길이가 작으므로 문제 그대로 구현해 나가면 될 것으로 보인다.
+* Fail/1st/00:22:40
+'''
+
+def solution(s):
+    answer = 9999
+    
+    for i in range(1, len(s)//2 + 1): # i는 몇 개 단위로 자를지를 나타낸다.
+        result = "" # s를 압축한 후의 문자열
+        combo = 1 # 현재 문자열이 몇 번 반복되는지
+        idx = 0
+        while idx + 2 * i <= len(s):
+            if s[idx:idx+i] == s[idx+i:idx+2*i]:
+                combo += 1
+            else:
+                if combo == 1:
+                    result += s[idx:idx+i]
+                else:
+                    result += str(combo) + s[idx:idx+i]
+                combo = 1
+            idx += i
+        # 남은 문자열 추가
+        if combo == 1:
+            result += s[idx:]
+        else:
+            result += str(combo) + s[idx:idx+i]
+        
+        if len(result) < answer:
+            answer = len(result)
+                
+    return answer
