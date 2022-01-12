@@ -3,6 +3,8 @@
 
 - s의 길이가 작으므로 문제 그대로 구현해 나가면 될 것으로 보인다.
 * Fail/1st/00:22:40
+- while문 종료 조건 부분을 수정하였다.
+* Fail/2nd/00:28:49
 '''
 
 def solution(s):
@@ -12,7 +14,7 @@ def solution(s):
         result = "" # s를 압축한 후의 문자열
         combo = 1 # 현재 문자열이 몇 번 반복되는지
         idx = 0
-        while idx + 2 * i <= len(s):
+        while idx + i <= len(s):
             if s[idx:idx+i] == s[idx+i:idx+2*i]:
                 combo += 1
             else:
