@@ -5,10 +5,12 @@
 * Fail/1st/00:22:40
 - while문 종료 조건 부분을 수정하였다.
 * Fail/2nd/00:28:49
+- 문자열 크기가 1일 때를 생각하지 않아 틀린 것으로 보이며, answer 초기값을 len(s)로 수정하였다.
+* Pass/3rd/00:32:17
 '''
 
 def solution(s):
-    answer = 9999
+    answer = len(s)
     
     for i in range(1, len(s)//2 + 1): # i는 몇 개 단위로 자를지를 나타낸다.
         result = "" # s를 압축한 후의 문자열
