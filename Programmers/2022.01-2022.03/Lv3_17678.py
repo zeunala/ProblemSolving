@@ -4,6 +4,8 @@
 - 우선 마지막 버스가 9시 + t * (n-1)분에 오므로 적어도 그 안에 와야 하며,
 또한 마지막 버스를 타는 인원 중 선착순 m명에 들어야 무사히 탈 수 있다.
 * Fail/1st/00:30:45
+- 콘이 같은 시각에 도착한 크루 중 제일 뒤에 선다는 점을 반영하였다.
+* Fail/2nd/00:33:12
 '''
 def timeToNum(time): # 예를 들어 "08:45"는 8*60+45의 int 값을 리턴한다.
     a, b = map(int, time.split(":"))
@@ -49,7 +51,7 @@ def solution(n, t, m, timetable):
     if len(numtable) < m: # 어떤 경우에도 내 앞에 m명 오는 경우
         pass
     else:
-        if answer > numtable[-m] - 1:
+        if answer >= numtable[-m] - 1:
             answer = numtable[-m] - 1 # m번째 사람보다는 1분 빨리 와야함
     
     return numToTime(answer)
