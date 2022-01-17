@@ -6,6 +6,9 @@
 * Fail/1st/00:30:45
 - 콘이 같은 시각에 도착한 크루 중 제일 뒤에 선다는 점을 반영하였다.
 * Fail/2nd/00:33:12
+- 제일 뒤에 선다는 점은 첫번째 시도부터 이미 반영되어 있었으며,
+버스를 태울 때 i의 범위가 잘못된 것으로 보여 수정하였다.
+* Pass/3rd/00:42:11
 '''
 def timeToNum(time): # 예를 들어 "08:45"는 8*60+45의 int 값을 리턴한다.
     a, b = map(int, time.split(":"))
@@ -41,7 +44,7 @@ def solution(n, t, m, timetable):
     
     answer = lastBusTime # 마지막 버스 이전에는 와야 한다.
 
-    for i in range(n - 1): # i번째 버스(마지막 버스를 제외하고 확인함)
+    for i in range(1, n): # i번째 버스(마지막 버스를 제외하고 확인함)
         for j in range(m): # 각 버스는 버스 시간에 맞춘 사람을 m명까지 태운다.
             if numtable and numtable[-1] <= timeToNum("09:00") + (i - 1) * t:
                 numtable.pop()
@@ -51,7 +54,7 @@ def solution(n, t, m, timetable):
     if len(numtable) < m: # 어떤 경우에도 내 앞에 m명 오는 경우
         pass
     else:
-        if answer >= numtable[-m] - 1:
+        if answer > numtable[-m] - 1:
             answer = numtable[-m] - 1 # m번째 사람보다는 1분 빨리 와야함
     
     return numToTime(answer)
