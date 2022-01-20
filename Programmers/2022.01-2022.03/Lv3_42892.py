@@ -4,7 +4,12 @@
 - 주어진 입력으로부터 이진트리를 만드는게 핵심이다.
 y좌표가 가장 높은 것이 루트이므로 루트부터 맞춰간다.
 * Fail/1st/00:57:52/RuntimeError
+- 혹시 순회 돌릴 때 재귀횟수가 너무 커져서 RuntimeError가 나는게 아닌가 싶어 재귀횟수를 늘려보았다.
+* Pass/2nd/01:20:42
 '''
+import sys
+
+sys.setrecursionlimit(10000) ## 재귀 횟수 증가
 preorderResult = []
 postorderResult = []
 
@@ -12,7 +17,6 @@ class treeNode: ## 노드를 나타내는 클래스. pos는 (x좌표, y좌표)�
     def __init__(self, pos, value):
         self.left = None
         self.right = None
-        self.parent = None
         self.x = pos[0]
         self.y = pos[1]
         self.value = value
