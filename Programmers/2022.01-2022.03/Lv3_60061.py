@@ -6,6 +6,8 @@
 만약 둘 다 있으면 3, 둘 다 없으면 0이 오도록 한다.
 field[y][x] % 2 == 1 이면 보가 있는 것이고, field[y][x] // 2 == 1이면 기둥이 있는 것이다.
 * Fail/1st/00:45:10
+- 일부 잘못된 부분을 수정하였다.
+* Fail/2nd/00:53:13
 '''
 
 def solution(n, build_frame):
@@ -20,7 +22,7 @@ def solution(n, build_frame):
         
         if b == 1: # 설치
             if a == 0: # 기둥 설치
-                if y == 0 or (x-1 >= 0 and field[y][x-1] % 2 == 1) or (field[y][x] // 2 == 1) or (y-1 >= 0 and field[y-1][x] // 2 == 1): # 기둥 조건 3개중 하나 충족시
+                if y == 0 or (x-1 >= 0 and field[y][x-1] % 2 == 1) or (field[y][x] % 2 == 1) or (y-1 >= 0 and field[y-1][x] // 2 == 1): # 기둥 조건 3개중 하나 충족시
                     if field[y][x] // 2 != 1: # 기둥 없다면 기둥을 세운다.
                         field[y][x] += 2
                 else: # 조건 충족 안하면 현재 명령 무시하고 다음 명령으로
@@ -46,7 +48,7 @@ def solution(n, build_frame):
             tempValues = [(x, y), (x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
             for (tempX, tempY) in tempValues:
                 if field[tempY][tempX] // 2 == 1: # 기둥있을 때 뺀 field 에서도 유효한지
-                    if tempY == 0 or (tempX-1 >= 0 and field[tempY][tempX-1] % 2 == 1) or (field[tempY][tempX] // 2 == 1) or (tempY-1 >= 0 and field[tempY-1][tempX] // 2 == 1):
+                    if tempY == 0 or (tempX-1 >= 0 and field[tempY][tempX-1] % 2 == 1) or (field[tempY][tempX] % 2 == 1) or (tempY-1 >= 0 and field[tempY-1][tempX] // 2 == 1):
                         pass
                     else:
                         valid = False
@@ -62,7 +64,6 @@ def solution(n, build_frame):
             if valid == False: # 조건 안맞은 경우가 발생했다면 롤백
                 field[y][x] += minusValue
             
-    print(field)
     for x in range(n):
         for y in range(n):
             if field[y][x] // 2 == 1: # 기둥이 있을 경우
