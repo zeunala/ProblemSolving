@@ -19,6 +19,9 @@
 - 각 방향에 따라 구슬이 움직인 결과를 리턴하는 함수를 정의하고, DFS로 탐색해본다.
 이 때, 한 번의 행동에서 빨간 구슬이 움직이지 않을 경우 가지치기를 통해 탐색 횟수를 줄이도록 한다.
 * Fail/1st/00:49:34
+- 빨간 구슬이 움직이지 않더라도 파란 구슬이 움직일 수 있고, 이 경우 파란 구슬이 빠지지 않도록 조정하는 것일수도 있다.
+따라서 구슬 둘 다 움직이지 않을 때 가지치기를 하도록 수정해본다.
+* Pass/2nd/00:52:05
 '''
 import sys
 from copy import deepcopy
@@ -74,7 +77,7 @@ def dfs(field, N, Rpos, Bpos, Opos):
     for i in range(4):
         (newRpos, newBpos, result) = nextField(field, i, Rpos, Bpos, Opos)
         
-        if Rpos == newRpos: # 돌려도 R위치 그대로이면 거기서 더 나아가지 않는다.
+        if Rpos == newRpos and Bpos == newBpos: # 돌려도 구슬 위치가 둘 다 그대로이면 거기서 더 나아가지 않는다.
             continue
         elif result == "B": # B가 O에 빠져도 마찬가지
             continue
