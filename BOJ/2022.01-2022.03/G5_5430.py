@@ -17,6 +17,8 @@ p의 길이는 1보다 크거나 같고, 100,000보다 작거나 같다.
 - 배열의 수의 개수가 10만이므로 단순히 배열을 가지고 reverse를 시키면 시간초과가 날 것으로 보인다.
 어차피 버리기와 뒤집기만 있으므로 양옆에 일종의 포인터를 두어 좁혀나가는 방식으로 하자.
 * Fail/1st/00:15:59
+- 출력 내용의 공백을 없애주었다.
+* Fail/2nd/00:21:14
 '''
 import sys
 
@@ -51,10 +53,13 @@ for i in range(T):
         print("error")
     else:
         result = arr[startIdx:endIdx+1]
-        if pointIdx == 0:
-            print(result)
-        elif pointIdx == 1:
+        if pointIdx == 1:
             result.reverse()
-            print(result)
+        outputText = "["
+        for e in result:
+            outputText += str(e)
+            outputText += ","
+        outputText = outputText[:-1] + "]" # 맨 뒤의 ,를 ]으로 변경
+        print(outputText)
     
     
