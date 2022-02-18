@@ -21,6 +21,8 @@
 * Fail/3rd/01:15:03
 - j값의 범위를 잘못 지정하는 실수를 발견하고 수정하였다.
 * Fail/4th/01:29:13/TimeOver
+- dfs시 중복으로 탐색하는 부분을 줄이도록 수정하였다.
+- Fail/5th/01:39:45/TimeOver
 '''
 from copy import deepcopy
 
@@ -50,9 +52,10 @@ def findOneNum(arr): # 1이 몇 개 있는지 리턴
 def checkArea(arr, one, two, three, four, five, alreadyCheck, alreadyI, alreadyJ): # arr과 현재까지 쓴 색종이 수들을 입력, 색종이 사용 개수 혹은 불가능시 -1 리턴.
     if alreadyCheck >= 6: # 이미 5*5가능성을 다 확인했던 상태라면 패스
         if alreadyCheck == 6: # 기존 하던걸 이어서 체크한다.
-            
             for i in range(alreadyI, 10):
                 for j in range(10):
+                    if i == alreadyI and j < alreadyJ:
+                        continue
                     if arr[i][j] == 1: # 종이로 덮어야 하는 부분 발견
                         if five < 5:
                             newArr = canUse(arr, 5, i, j)
@@ -65,6 +68,8 @@ def checkArea(arr, one, two, three, four, five, alreadyCheck, alreadyI, alreadyJ
         if alreadyCheck == 5:
             for i in range(alreadyI, 10):
                 for j in range(0, 10):
+                    if i == alreadyI and j < alreadyJ:
+                        continue
                     if arr[i][j] == 1:
                         if four < 5:
                             newArr = canUse(arr, 4, i, j)
@@ -90,6 +95,8 @@ def checkArea(arr, one, two, three, four, five, alreadyCheck, alreadyI, alreadyJ
         if alreadyCheck == 4:
             for i in range(alreadyI, 10):
                 for j in range(0, 10):
+                    if i == alreadyI and j < alreadyJ:
+                        continue
                     if arr[i][j] == 1:
                         if three < 5:
                             newArr = canUse(arr, 3, i, j)
@@ -115,6 +122,8 @@ def checkArea(arr, one, two, three, four, five, alreadyCheck, alreadyI, alreadyJ
         if alreadyCheck == 3:
             for i in range(alreadyI, 10):
                 for j in range(0, 10):
+                    if i == alreadyI and j < alreadyJ:
+                        continue
                     if arr[i][j] == 1:
                         if two < 5:
                             newArr = canUse(arr, 2, i, j)
@@ -140,6 +149,8 @@ def checkArea(arr, one, two, three, four, five, alreadyCheck, alreadyI, alreadyJ
         if alreadyCheck == 2:
             for i in range(alreadyI, 10):
                 for j in range(0, 10):
+                    if i == alreadyI and j < alreadyJ:
+                        continue
                     if arr[i][j] == 1:
                         if one < 5:
                             newArr = canUse(arr, 1, i, j)
