@@ -24,7 +24,8 @@
 - 첫번째 경우보단 테스트 케이스를 더 통과하였지만 아직 부족하다. hitDP배열을 추가하여 hitDP[a][b]를 필드 a에서 b루타를 쳤을 때 필드와 획득점수를 저장하도록 해보자.
 * Fail/3rd/01:39:12/TimeOver
 - 좀 더 최적화를 시도해보았다.
-* Fail/4th/02:07:08/TimeOver
+* Pass/4th/02:07:08(use PyPy3)
+- (처음엔 시간초과가 났으나 재채점한 결과 시간초과가 나지 않아서 수정함)
 '''
 import sys
 from itertools import permutations
