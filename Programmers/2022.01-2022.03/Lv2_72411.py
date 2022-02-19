@@ -5,6 +5,8 @@
 * Fail/1st/00:20:24/TimeOver
 - orders배열에 대해 전처리를 해서 좀 더 빠르도록 변경하였다.
 * Fail/2nd/00:34:37/TimeOver
+- 시간을 줄이도록 가지치기를 추가하였다.
+* Fail/3rd/00:54:15/TimeOver
 '''
 
 from itertools import combinations
@@ -27,8 +29,8 @@ def solution(orders, course):
             else:
                 ordersCompiled[i][e] = False
     
-    for e in course:
-        allAlphaCombinationTemp = list(combinations(allAlphabets, e))
+    for x in range(2, 11):
+        allAlphaCombinationTemp = list(combinations(allAlphabets, x))
         allAlphaCombination = []
         for t in allAlphaCombinationTemp:
             temp = ""
@@ -42,20 +44,24 @@ def solution(orders, course):
         
         maxCount = 0
         for e in allAlphaCombination:
-            for f in ordersCompiled:
+            for f in range(len(ordersCompiled)):
                 isInCombination = True # 각 조합들이 orders의 각 항목에 있는지 여부
+                if len(e) >= 2 and e[:-1] not in ordersCompiled[f]: # 가지치기 추가
+                    continue
                 for e2 in e:
-                    if not f[e2]:
+                    if not ordersCompiled[f][e2]:
                         isInCombination = False
                         break
                 if isInCombination:
                     tempDict[e] += 1
+                    ordersCompiled[f][e] = True # 가지치기 위해 가능한 조합 추가
                     if maxCount < tempDict[e]:
                         maxCount = tempDict[e]
         
-        for e in allAlphaCombination:
-            if tempDict[e] == maxCount and maxCount > 1:
-                answer.append(e)
+        if maxCount > 1 and x in course:
+            for e in allAlphaCombination:
+                if tempDict[e] == maxCount:
+                    answer.append(e)
         
     answer.sort()
     return answer
