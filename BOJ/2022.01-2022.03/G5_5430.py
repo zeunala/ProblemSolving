@@ -19,6 +19,8 @@ p의 길이는 1보다 크거나 같고, 100,000보다 작거나 같다.
 * Fail/1st/00:15:59
 - 출력 내용의 공백을 없애주었다.
 * Fail/2nd/00:21:14
+- 배열의 크기가 0일 때 R을 한 경우 반례가 발생해서 수정하였다.
+* Fail/3rd/00:27:53
 '''
 import sys
 
@@ -37,6 +39,7 @@ for i in range(T):
     startIdx = 0 # 맨 앞의 포인터 인덱스
     endIdx = arrLen - 1 # 맨 뒤의 포인터 인덱스
     pointIdx = 0 # 0이면 현재 앞을 향하고, 1이면 뒤를 향하는 상태
+    isError = False # 현재 에러인지
     
     for e in currentCommand:
         if e == "R":
@@ -47,9 +50,10 @@ for i in range(T):
             else:
                 endIdx -= 1
             if startIdx > endIdx: # 0에서 삭제를 시도하는 경우
+                isError = True
                 break
             
-    if startIdx > endIdx:
+    if isError:
         print("error")
     else:
         result = arr[startIdx:endIdx+1]
@@ -59,7 +63,10 @@ for i in range(T):
         for e in result:
             outputText += str(e)
             outputText += ","
-        outputText = outputText[:-1] + "]" # 맨 뒤의 ,를 ]으로 변경
+            
+        if outputText[-1] == ",": # 맨 뒤의 , 제거
+            outputText = outputText[:-1]
+        outputText += "]"
         print(outputText)
     
     
