@@ -13,10 +13,14 @@ N은 1보다 크거나 같고, 100,000보다 작거나 같은 자연수이다.
 
 '''
 - 각 정수마다 이진탐색을 통해 삽입하고, 중간값을 출력하도록 한다.
-* Fail/1st/00:39:43
+* Fail/1st/00:39:43/TimeOver
+- 하나 하나 탐색하는 대신 파이썬의 bisect를 이용하는 방식으로 수정하였다.
+* Fail/2nd/00:43:27/TimeOver
 '''
 import sys
-from random import random
+from bisect import bisect_left
+import random
+
 N = int(sys.stdin.readline().rstrip())
 
 arr = []
@@ -25,26 +29,8 @@ print(arr[0])
 
 for i in range(N-1):
     num = int(sys.stdin.readline().rstrip())
-    idx = -1 # 삽입이 되어야 할 곳
-    
-    start = 0
-    end = len(arr) - 1
-    while start <= end:
-        mid = start + ((end - start) // 2)
-        if arr[mid] < num:
-            start = mid + 1
-            idx = start
-        elif arr[mid] > num:
-            end = mid - 1
-            idx = end + 1
-        else:
-            idx = mid
-            break
-        
-    if idx < 0:
-        idx = 0
-    
-    arr.insert(idx, num)
+
+    arr.insert(bisect_left(arr, num), num)
     
     if len(arr) % 2 == 0:
         print(min(arr[len(arr)//2], arr[len(arr)//2 - 1]))
