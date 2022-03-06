@@ -14,30 +14,39 @@
 '''
 - 첫번째 줄 첫번째 열부터 DFS로 탐색해봐서 가능한 경우를 찾을 때까지 탐색해보자.
 * Fail/1st/00:18:38/TimeOver
+- 시간을 좀 더 줄이기 위해 미리 각 행/열/정사각형 구간에 대해 숫자 존재 여부를 저장해서,
+checkValid() 함수의 속도를 높여보자.
+* Fail/2nd/00:49:15/TimeOver
 '''
 from copy import deepcopy
 
-def checkValid(arr, i, j, num): # i행 j열에 num숫자가 들어갈 수 있는지 넣기 전에 체크하는 함수
-    if num in arr[i]:
-        return False
+def squareIdx(i, j): # i행 j열이 0~8번째 정사각형 중 몇 번째에 속하는지 리턴
+    result = 0
     
-    for k in range(9):
-        if arr[k][j] == num:
-            return False
+    if i // 3 == 1:
+        result += 3
+    elif i // 3 == 2:
+        result += 6
+    
+    if j // 3 == 1:
+        result += 1
+    elif j // 3 == 2:
+        result += 2
         
-    # i행 j열이 속한 3*3 블록에서 첫번째 칸의 인덱스
-    a = i - (i % 3)
-    b = j - (j % 3)
-    
-    for k1 in range(3):
-        for k2 in range(3):
-            if arr[a+k1][b+k2] == num:
-                return False
-            
-    return True # 3가지 조건 모두 위배되지 않는 경우
+    return result
 
-def dfs(arr):
+
+def checkValid(rowNum, colNum, squNum, i, j, num): # i행 j열에 num숫자가 들어갈 수 있는지 넣기 전에 체크하는 함수
+    if rowNum[i][num] or colNum[j][num] or squNum[squareIdx(i, j)][num]:
+        return False
+    else:
+        return True
+
+def dfs(arr, rowNum, colNum, squNum):
     tempArr = deepcopy(arr)
+    tempRowNum = deepcopy(rowNum)
+    tempColNum = deepcopy(colNum)
+    tempSquNum = deepcopy(squNum)
     
     # arr 중에 빈 칸(0)이 있는지 탐색
     for i in range(9):
@@ -46,11 +55,20 @@ def dfs(arr):
                 # 빈 칸에 대해 1~9까지 수를 하나씩 시도
                 for k in range(1, 10):
                     # 넣어도 규칙에 위배되지 않는다면 넣고 dfs 호출
-                    if checkValid(tempArr, i, j, k):
+                    if checkValid(tempRowNum, tempColNum, tempSquNum, i, j, k):
                         tempArr[i][j] = k
-                        result = dfs(tempArr)
+                        tempRowNum[i][k] = True
+                        tempColNum[j][k] = True
+                        tempSquNum[squareIdx(i, j)][k] = True
+                        
+                        result = dfs(tempArr, tempRowNum, tempColNum, tempSquNum)
                         if result != None:
                             return result
+                        else: # 만약 None이라면 이 k가 아니라는 것이므로 다시 복구
+                            tempArr[i][j] = 0
+                            tempRowNum[i][k] = False
+                            tempColNum[j][k] = False
+                            tempSquNum[squareIdx(i, j)][k] = False
                     
                 return None # 1~9까지 어느 수를 넣어도 답이 없는 경우 None 리턴
                     
@@ -60,7 +78,17 @@ arr = []
 for i in range(9):
     arr.append(list(map(int, list(input()))))
 
-result = dfs(arr)
+rowNum = [[False for _ in range(10)] for _ in range(9)] # rowNum[a][b]는 a행(0~8)에 숫자 b(1~9)가 존재하는지 여부를 가리킨다.
+colNum = [[False for _ in range(10)] for _ in range(9)] # 마찬가지로 각 열에 대해 저장
+squNum = [[False for _ in range(10)] for _ in range(9)] # 마찬가지로 각 정사각형 구간에 대해 저장
+
+for i in range(9):
+    for j in range(9):
+        rowNum[i][arr[i][j]] = True
+        colNum[j][arr[i][j]] = True
+        squNum[squareIdx(i,j)][arr[i][j]] = True
+
+result = dfs(arr, rowNum, colNum, squNum)
 
 for i in range(9):
     for j in range(9):
