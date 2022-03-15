@@ -17,6 +17,8 @@ IQ 테스트
 네번째수-세번째수는 a^2(ax+b-x) 
 와 같은 특성을 이용한다.
 * Fail/1st/00:25:08
+- a, b가 정수라는 조건을 빠뜨렸다. 공비가 정수라는 가정을 하고 r을 잡았는데 a가 정수가 아니여도 답이 안되도록 수정하였다.
+* Pass/2nd/00:41:56
 '''
 N = int(input())
 arr = list(map(int, input().split()))
@@ -41,9 +43,13 @@ else:
             print('B')
     else:
         tempArr = [arr[i+1]-arr[i] for i in range(len(arr)-1)] # 이 배열은 a가 곱해지는 등비수열이 된다.
-        r = tempArr[1] // tempArr[0] # r은 공비 (앞에서 첫 두 개의 수가 같은 경우를 걸렀으므로 0으로 나눌 일은 없다.)
         
-        isValid = True # 공비가 모두 일치하는지 체크
+        isValid = True # 공비가 모두 일치하는지, 또 그것이 정수인지 체크
+        
+        r = tempArr[1] // tempArr[0] # r은 공비 (앞에서 첫 두 개의 수가 같은 경우를 걸렀으므로 0으로 나눌 일은 없다)
+        if tempArr[0] * r != tempArr[1]: # 공비가 정수가 안 될 경우 여기 걸린다.
+            isValid = False
+        
         for i in range(1, len(tempArr) - 1):
             if tempArr[i] * r != tempArr[i+1]:
                 isValid = False
