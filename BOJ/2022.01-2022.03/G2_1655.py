@@ -16,23 +16,27 @@ N은 1보다 크거나 같고, 100,000보다 작거나 같은 자연수이다.
 * Fail/1st/00:39:43/TimeOver
 - 하나 하나 탐색하는 대신 파이썬의 bisect를 이용하는 방식으로 수정하였다.
 * Fail/2nd/00:43:27/TimeOver
+- 힙을 이용하는 방식으로 접근해보자.
+최대힙과 최소힙을 만들어 최대힙에 삽입하되 최대힙과 최소힙의 원소 개수를 같거나 최대힙이 1개 크게 맞춰줘서,
+최대힙에서 가장 큰 원소가 중간값이 되도록 만들면 된다.
+* Fail/3rd/00:59:07
 '''
 import sys
-from bisect import bisect_left
-import random
+import heapq
 
 N = int(sys.stdin.readline().rstrip())
 
-arr = []
-arr.append(int(sys.stdin.readline().rstrip())) # 첫번째 수 넣고 시작
-print(arr[0])
+maxHeap = []
+minHeap = []
 
-for i in range(N-1):
+for i in range(N):
     num = int(sys.stdin.readline().rstrip())
-
-    arr.insert(bisect_left(arr, num), num)
     
-    if len(arr) % 2 == 0:
-        print(min(arr[len(arr)//2], arr[len(arr)//2 - 1]))
-    else:
-        print(arr[len(arr)//2])
+    heapq.heappush(maxHeap, -num)
+    
+    if len(maxHeap) >= len(minHeap) + 2:
+        temp = - heapq.heappop(maxHeap)
+        heapq.heappush(minHeap, temp)
+    
+    print(-maxHeap[0])
+    
