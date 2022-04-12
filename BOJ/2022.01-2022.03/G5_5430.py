@@ -21,6 +21,8 @@ p의 길이는 1보다 크거나 같고, 100,000보다 작거나 같다.
 * Fail/2nd/00:21:14
 - 배열의 크기가 0일 때 R을 한 경우 반례가 발생해서 수정하였다.
 * Fail/3rd/00:27:53
+- 0에서 삭제하는 경우의 체크가 실제 삭제 앞에 이뤄지도록 수정하였다.
+* Pass/4th/00:31:18
 '''
 import sys
 
@@ -45,13 +47,13 @@ for i in range(T):
         if e == "R":
             pointIdx = abs(pointIdx - 1) # 0이면 1로, 1이면 0으로 만들어준다.
         elif e == "D":
+            if startIdx > endIdx: # 0에서 삭제를 시도하는 경우
+                isError = True
+                break
             if pointIdx == 0:
                 startIdx += 1
             else:
                 endIdx -= 1
-            if startIdx > endIdx: # 0에서 삭제를 시도하는 경우
-                isError = True
-                break
             
     if isError:
         print("error")
