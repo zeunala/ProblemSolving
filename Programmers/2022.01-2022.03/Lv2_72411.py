@@ -7,6 +7,8 @@
 * Fail/2nd/00:34:37/TimeOver
 - 시간을 줄이도록 가지치기를 추가하였다.
 * Fail/3rd/00:54:15/TimeOver
+- 집합연산을 이용하여 좀 더 빠르게 하도록 수정하였다.
+* Fail/4th/01:02:43/TimeOver
 '''
 
 from itertools import combinations
@@ -21,14 +23,12 @@ def solution(orders, course):
                 allAlphabets.append(e2)
     allAlphabets.sort()
     
-    ordersCompiled = [{} for _ in range(len(orders))]
+    ordersCompiled = [set([]) for _ in range(len(orders))]
     for i in range(len(orders)):
         for e in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
             if e in orders[i]:
-                ordersCompiled[i][e] = True
-            else:
-                ordersCompiled[i][e] = False
-    
+                ordersCompiled[i].add(e)
+
     for x in range(2, 11):
         allAlphaCombinationTemp = list(combinations(allAlphabets, x))
         allAlphaCombination = []
@@ -49,12 +49,12 @@ def solution(orders, course):
                 if len(e) >= 2 and e[:-1] not in ordersCompiled[f]: # 가지치기 추가
                     continue
                 for e2 in e:
-                    if not ordersCompiled[f][e2]:
+                    if e2 not in ordersCompiled[f]:
                         isInCombination = False
                         break
                 if isInCombination:
                     tempDict[e] += 1
-                    ordersCompiled[f][e] = True # 가지치기 위해 가능한 조합 추가
+                    ordersCompiled[f].add(e) # 가지치기 위해 가능한 조합 추가
                     if maxCount < tempDict[e]:
                         maxCount = tempDict[e]
         
@@ -62,6 +62,6 @@ def solution(orders, course):
             for e in allAlphaCombination:
                 if tempDict[e] == maxCount:
                     answer.append(e)
-        
+    
     answer.sort()
     return answer
