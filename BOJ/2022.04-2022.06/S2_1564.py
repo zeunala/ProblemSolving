@@ -12,6 +12,8 @@
 '''
 - 매 반복마다 맨 뒤 0들을 제거하는 식으로 진행한다.
 * Fail/1st/00:32:10
+- 맨 앞에 0을 붙여주도록 수정하였다.
+* Fail/2nd/00:41:58
 '''
 
 N = int(input())
@@ -25,5 +27,9 @@ for i in range(2, N+1):
         result //= 10
         
     result %= 100000
+
+answer = str(result)
+while len(answer) < 5:
+    answer = '0' + answer
     
-print(str(result)[-5:])
+print(answer)
