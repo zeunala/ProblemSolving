@@ -22,7 +22,9 @@
 - j값의 범위를 잘못 지정하는 실수를 발견하고 수정하였다.
 * Fail/4th/01:29:13/TimeOver
 - dfs시 중복으로 탐색하는 부분을 줄이도록 수정하였다.
-- Fail/5th/01:39:45/TimeOver
+* Fail/5th/01:39:45/TimeOver
+- 각 좌표마다 1*1~5*5를 체크하는 방식으로 수정하였다.
+* Fail/6th/02:31:19/TimeOver
 '''
 from copy import deepcopy
 
@@ -40,141 +42,78 @@ def canUse(arr, N, a, b): # arr[a][b]부터 N*N 종이 자리가 있는지 체�
     
     return resultArr
 
-def findOneNum(arr): # 1이 몇 개 있는지 리턴
+def findOneNum(arr, currentI, currentJ): # 1이 몇 개 있는지 리턴
     result = 0
-    for i in range(10):
+    for i in range(currentI, 10):
         for j in range(10):
+            if i == currentI and j < currentJ:
+                continue
+            
             if arr[i][j] == 1:
                 result += 1
 
     return result
 
-def checkArea(arr, one, two, three, four, five, alreadyCheck, alreadyI, alreadyJ): # arr과 현재까지 쓴 색종이 수들을 입력, 색종이 사용 개수 혹은 불가능시 -1 리턴.
-    if alreadyCheck >= 6: # 이미 5*5가능성을 다 확인했던 상태라면 패스
-        if alreadyCheck == 6: # 기존 하던걸 이어서 체크한다.
-            for i in range(alreadyI, 10):
-                for j in range(10):
-                    if i == alreadyI and j < alreadyJ:
-                        continue
-                    if arr[i][j] == 1: # 종이로 덮어야 하는 부분 발견
-                        if five < 5:
-                            newArr = canUse(arr, 5, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two, three, four, five + 1, 6, i, j)
-                                if newResult != -1:
-                                    return newResult
-
-    if alreadyCheck >= 5:
-        if alreadyCheck == 5:
-            for i in range(alreadyI, 10):
-                for j in range(0, 10):
-                    if i == alreadyI and j < alreadyJ:
-                        continue
-                    if arr[i][j] == 1:
-                        if four < 5:
-                            newArr = canUse(arr, 4, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two, three, four + 1, five, 5, i, j)
-                                if newResult != -1:
-                                    return newResult
-        else:
-            for i in range(10):
-                for j in range(10):
-                    if arr[i][j] == 1:
-                        if four < 5:
-                            newArr = canUse(arr, 4, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two, three, four + 1, five, 5, i, j)
-                                if newResult != -1:
-                                    return newResult
-
-    if findOneNum(arr) > (3*3*(5-three) + 2*2*(5-two) + (5-one)): # 남은 색종이로 1을 절대로 덮을 수 없는 경우 굳이 더 안 찾고 -1 리턴
-        return -1
-
-    if alreadyCheck >= 4:
-        if alreadyCheck == 4:
-            for i in range(alreadyI, 10):
-                for j in range(0, 10):
-                    if i == alreadyI and j < alreadyJ:
-                        continue
-                    if arr[i][j] == 1:
-                        if three < 5:
-                            newArr = canUse(arr, 3, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two, three + 1, four, five, 4, i, j)
-                                if newResult != -1:
-                                    return newResult
-        else:
-            for i in range(10):
-                for j in range(10):
-                    if arr[i][j] == 1:
-                        if three < 5:
-                            newArr = canUse(arr, 3, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two, three + 1, four, five, 4, i, j)
-                                if newResult != -1:
-                                    return newResult
-
-    if findOneNum(arr) > (2*2*(5-two) + (5-one)): # 남은 색종이로 1을 절대로 덮을 수 없는 경우 굳이 더 안 찾고 -1 리턴
-        return -1
-
-    if alreadyCheck >= 3:
-        if alreadyCheck == 3:
-            for i in range(alreadyI, 10):
-                for j in range(0, 10):
-                    if i == alreadyI and j < alreadyJ:
-                        continue
-                    if arr[i][j] == 1:
-                        if two < 5:
-                            newArr = canUse(arr, 2, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two + 1, three, four, five, 3, i, j)
-                                if newResult != -1:
-                                    return newResult
-        else:
-            for i in range(10):
-                for j in range(10):
-                    if arr[i][j] == 1:
-                        if two < 5:
-                            newArr = canUse(arr, 2, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one, two + 1, three, four, five, 3, i, j)
-                                if newResult != -1:
-                                    return newResult
-
-    if findOneNum(arr) > (5-one): # 남은 색종이로 1을 절대로 덮을 수 없는 경우 굳이 더 안 찾고 -1 리턴
-        return -1
-
-    if alreadyCheck >= 2:
-        if alreadyCheck == 2:
-            for i in range(alreadyI, 10):
-                for j in range(0, 10):
-                    if i == alreadyI and j < alreadyJ:
-                        continue
-                    if arr[i][j] == 1:
-                        if one < 5:
-                            newArr = canUse(arr, 1, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one + 1, two, three, four, five, 2, i, j)
-                                if newResult != -1:
-                                    return newResult
-                        return -1 # 색종이로 덮을 수 없는 경우 여기 도달한다.
-        else:
-            for i in range(10):
-                for j in range(10):
-                    if arr[i][j] == 1:
-                        if one < 5:
-                            newArr = canUse(arr, 1, i, j)
-                            if newArr != None:
-                                newResult = checkArea(newArr, one + 1, two, three, four, five, 2, i, j)
-                                if newResult != -1:
-                                    return newResult
-                        return -1 # 색종이로 덮을 수 없는 경우 여기 도달한다.
+def checkArea(arr, one, two, three, four, five, currentI, currentJ): # arr과 현재까지 쓴 색종이 수들을 입력, 색종이 사용 개수 혹은 불가능시 -1 리턴.
+    for i in range(currentI, 10):
+        for j in range(10):
+            if i == currentI and j < currentJ:
+                continue
+            
+            if arr[i][j] == 1: # 종이로 덮어야 하는 부분 발견
+                tempAnswer = int(1e10)
+                checkValid = True # 예를 들어 2*2가 들어가지 못한다면 자동으로 3*3, 4*4, 5*5도 들어가지 못하므로 가지치기 위함.
                 
+                if one < 5:
+                    newArr = canUse(arr, 1, i, j)
+                    if newArr != None:
+                        newResult = checkArea(newArr, one + 1, two, three, four, five, i, j)
+                        if newResult != -1 and tempAnswer > newResult:
+                            tempAnswer = newResult
+                            
+                if two < 5:
+                    newArr = canUse(arr, 2, i, j)
+                    if newArr != None:
+                        newResult = checkArea(newArr, one, two + 1, three, four, five, i, j)
+                        if newResult != -1 and tempAnswer > newResult:
+                            tempAnswer = newResult
+                    else:
+                        checkValid = False
+                            
+                if three < 5 and checkValid:
+                    newArr = canUse(arr, 3, i, j)
+                    if newArr != None:
+                        newResult = checkArea(newArr, one, two, three + 1, four, five, i, j)
+                        if newResult != -1 and tempAnswer > newResult:
+                            tempAnswer = newResult
+                    else:
+                        checkValid = False
+                            
+                if four < 5 and checkValid:
+                    newArr = canUse(arr, 4, i, j)
+                    if newArr != None:
+                        newResult = checkArea(newArr, one, two, three, four + 1, five, i, j)
+                        if newResult != -1 and tempAnswer > newResult:
+                            tempAnswer = newResult
+                    else:
+                        checkValid = False
+                
+                if five < 5 and checkValid:
+                    newArr = canUse(arr, 5, i, j)
+                    if newArr != None:
+                        newResult = checkArea(newArr, one, two, three, four, five + 1, i, j)
+                        if newResult != -1 and tempAnswer > newResult:
+                            tempAnswer = newResult
+                
+                if tempAnswer == int(1e10):
+                    return -1
+                else:
+                    return tempAnswer
+            
     return one + two + three + four + five
-
+                
 arr = []
 for i in range(10):
     arr.append(list(map(int, input().split())))
 
-print(checkArea(arr, 0, 0, 0, 0, 0, 6, 0, 0))
+print(checkArea(arr, 0, 0, 0, 0, 0, 0, 0))
