@@ -16,6 +16,9 @@
 * Fail/2nd/00:41:58
 - 혹시 모를 예외를 대비해 무조건 맨 앞에 0을 붙이지 않도록 하였다.
 * Fail/3rd/00:53:54
+- 매 for문에서 숫자를 5~6개만 저장할 경우 곱하는 과정에서 0이 들어가 정보가 손실될 수 있다.
+더 많은 숫자를 저장하도록 수정하였다.
+* Pass/4th/00:56:01
 '''
 
 N = int(input())
@@ -28,7 +31,7 @@ for i in range(2, N+1):
     while result % 10 == 0 and result > 0:
         result //= 10
         
-    result %= 1000000
+    result %= 10000000000000000
 
 answer = str(result)[-5:]
 
