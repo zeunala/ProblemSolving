@@ -18,6 +18,8 @@ s줄에 걸쳐 물음에 답한다.
 '''
 - 각 사건에 대하여 뒤에 있는 번호의 사건들의 리스트를 저장하는 식으로 해보자.
 * Fail/1st/00:16:37
+- 코드 중간에서 오류를 발견하여 수정하였다.
+* Fail/2nd/00:23:09/TimeOver
 '''
 import sys
 
@@ -52,7 +54,7 @@ for i in range(S):
     
     if dfsAfter(after, a, b, [False for _ in range(N+1)]):
         print(-1)
-    elif dfsAfter(after, a, b, [False for _ in range(N+1)]):
+    elif dfsAfter(after, b, a, [False for _ in range(N+1)]):
         print(1)
     else:
         print(0)
