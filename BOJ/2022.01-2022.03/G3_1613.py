@@ -20,6 +20,8 @@ s줄에 걸쳐 물음에 답한다.
 * Fail/1st/00:16:37
 - 코드 중간에서 오류를 발견하여 수정하였다.
 * Fail/2nd/00:23:09/TimeOver
+- dfsAfter를 재귀적으로 호출하는 동시에 after를 갱신하도록 수정하였다.
+* Pass/3rd/00:28:39(use PyPy3)
 '''
 import sys
 
@@ -34,6 +36,9 @@ def dfsAfter(after, current, target, visited): # current 이후 target이 일어
             return True
         elif not visited[e]:
             if dfsAfter(after, e, target, visited):
+                # after도 같이 갱신
+                after[current].add(target)
+                after[e].add(target)
                 return True
     
     return False
@@ -41,11 +46,11 @@ def dfsAfter(after, current, target, visited): # current 이후 target이 일어
 
 N, K = map(int, sys.stdin.readline().rstrip().split())
 
-after = [[] for _ in range(N+1)] # after[i]는 i번 사건보다 나중에 일어난 사건들의 번호가 담긴다.
+after = [set() for _ in range(N+1)] # after[i]는 i번 사건보다 나중에 일어난 사건들의 번호가 담긴다.
 
 for i in range(K):
     first, second = map(int, sys.stdin.readline().rstrip().split())
-    after[first].append(second)
+    after[first].add(second)
 
 S = int(sys.stdin.readline().rstrip())
 
