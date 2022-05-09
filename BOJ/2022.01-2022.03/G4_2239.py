@@ -17,6 +17,8 @@
 - 시간을 좀 더 줄이기 위해 미리 각 행/열/정사각형 구간에 대해 숫자 존재 여부를 저장해서,
 checkValid() 함수의 속도를 높여보자.
 * Fail/2nd/00:49:15/TimeOver
+- dfs함수를 좀 더 빠르게 하도록 수정하였다.
+* Fail/3rd/00:58:46/TimeOver
 '''
 from copy import deepcopy
 
@@ -42,37 +44,40 @@ def checkValid(rowNum, colNum, squNum, i, j, num): # i행 j열에 num숫자가 �
     else:
         return True
 
-def dfs(arr, rowNum, colNum, squNum):
+def dfs(arr, rowNum, colNum, squNum, i, j):
     tempArr = deepcopy(arr)
     tempRowNum = deepcopy(rowNum)
     tempColNum = deepcopy(colNum)
     tempSquNum = deepcopy(squNum)
     
-    # arr 중에 빈 칸(0)이 있는지 탐색
-    for i in range(9):
-        for j in range(9):
-            if tempArr[i][j] == 0:
-                # 빈 칸에 대해 1~9까지 수를 하나씩 시도
-                for k in range(1, 10):
-                    # 넣어도 규칙에 위배되지 않는다면 넣고 dfs 호출
-                    if checkValid(tempRowNum, tempColNum, tempSquNum, i, j, k):
-                        tempArr[i][j] = k
-                        tempRowNum[i][k] = True
-                        tempColNum[j][k] = True
-                        tempSquNum[squareIdx(i, j)][k] = True
-                        
-                        result = dfs(tempArr, tempRowNum, tempColNum, tempSquNum)
-                        if result != None:
-                            return result
-                        else: # 만약 None이라면 이 k가 아니라는 것이므로 다시 복구
-                            tempArr[i][j] = 0
-                            tempRowNum[i][k] = False
-                            tempColNum[j][k] = False
-                            tempSquNum[squareIdx(i, j)][k] = False
-                    
-                return None # 1~9까지 어느 수를 넣어도 답이 없는 경우 None 리턴
-                    
-    return tempArr
+    if tempArr[i][j] == 0:
+        # 빈 칸에 대해 1~9까지 수를 하나씩 시도
+        for k in range(1, 10):
+            # 넣어도 규칙에 위배되지 않는다면 넣고 dfs 호출
+            if checkValid(tempRowNum, tempColNum, tempSquNum, i, j, k):
+                tempArr[i][j] = k
+                tempRowNum[i][k] = True
+                tempColNum[j][k] = True
+                tempSquNum[squareIdx(i, j)][k] = True
+                
+                result = dfs(tempArr, tempRowNum, tempColNum, tempSquNum, i, j)
+                if result != None:
+                    return result
+                else: # 만약 None이라면 이 k가 아니라는 것이므로 다시 복구
+                    tempArr[i][j] = 0
+                    tempRowNum[i][k] = False
+                    tempColNum[j][k] = False
+                    tempSquNum[squareIdx(i, j)][k] = False
+            
+        return None # 1~9까지 어느 수를 넣어도 답이 없는 경우 None 리턴
+    else:
+        j += 1
+        if j >= 9:
+            i += 1
+            j = 0
+        if i >= 9:
+            return tempArr
+        return dfs(tempArr, tempRowNum, tempColNum, tempSquNum, i, j)
 
 arr = []
 for i in range(9):
@@ -88,7 +93,7 @@ for i in range(9):
         colNum[j][arr[i][j]] = True
         squNum[squareIdx(i,j)][arr[i][j]] = True
 
-result = dfs(arr, rowNum, colNum, squNum)
+result = dfs(arr, rowNum, colNum, squNum, 0, 0)
 
 for i in range(9):
     for j in range(9):
