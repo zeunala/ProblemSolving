@@ -17,8 +17,11 @@
 이 때, 1번부터 시작하되 중간에 탐색한 것이 있다면 그 번호는 건너뛰어야 시간초과를 방지할 수 있을 것이다.
 (예를 들어 5만~10만까지 싸이클을 이루고 있는데 1번~49999번까지 5만을 가리킬 경우 시간초과가 날 것이다.)
 * Fail/1st/00:44:50/TimeOver
+- index 함수를 최대한 적게 호출하도록 수정하였다.
+* Pass/2nd/00:58:36
 '''
 import sys
+from collections import defaultdict
 
 T = int(sys.stdin.readline().rstrip())
 
@@ -42,13 +45,13 @@ for i in range(T):
             continue
         
         cycleArr = [] # 싸이클 후보 순서가 여기 담김
-        cycleDict = {} # 싸이클 후보에 속하는지 여부를 빠르게 찾기 위해 사용
+        cycleDict = defaultdict(int) # 싸이클 후보에 속하는지 여부를 빠르게 찾기 위해 사용
         
         # j와 arr[j]부터 싸이클 시작
         cycleArr.append(j)
         cycleArr.append(arr[j])
-        cycleDict[j] = True
-        cycleDict[arr[j]] = True
+        cycleDict[j] += 1
+        cycleDict[arr[j]] += 1
         
         while True:
             if visited[cycleArr[-1]] and not isTeam[cycleArr[-1]]: # 현재 있는 싸이클 후보들이 모두 속하지 못하는 경우
@@ -62,7 +65,7 @@ for i in range(T):
                     visited[temp] = True
                     isTeam[temp] = True
                 break
-            elif cycleArr[-1] in cycleDict and cycleArr.index(cycleArr[-1]) != len(cycleArr) - 1: # 1 -> 2 -> 3 -> 4 -> 2 와 같이 싸이클이 중간에 만들어지는 경우
+            elif cycleArr[-1] in cycleDict and cycleDict[cycleArr[-1]] > 1: # 1 -> 2 -> 3 -> 4 -> 2 와 같이 싸이클이 중간에 만들어지는 경우
                 isNotCycle = cycleArr[:cycleArr.index(cycleArr[-1])] # 싸이클 이뤄지지 않은 부분은 팀을 못 이룸
                 isCycle = cycleArr[cycleArr.index(cycleArr[-1]):] # 싸이클 이뤄진 부분끼리만 팀을 이룸
                 while isNotCycle:
@@ -76,7 +79,7 @@ for i in range(T):
             else:
                 next = arr[cycleArr[-1]]
                 cycleArr.append(next)
-                cycleDict[next] = True
+                cycleDict[next] += 1
                 
     answer = 0
     for e in isTeam:
