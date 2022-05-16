@@ -15,6 +15,8 @@
 * Fail/2nd/00:30:19
 - 잘못된 코드를 발견하여 수정하였다.
 * Fail/3rd/00:40:53
+- 해당 코드를 재수정하였다.
+* Pass/4th/00:42:45
 '''
 def checkValid(arr):
     # 세로방향으로 위/아래 회전
@@ -22,7 +24,7 @@ def checkValid(arr):
         return 1
     
     # 세로방향으로 아래/위 회전
-    if arr[1] == arr[3] == arr[21] == arr[23] and arr[5] == arr[7] == arr[2] == arr[4] and arr[9] == arr[11] == arr[10] == arr[12] and arr[22] == arr[24] == arr[6] == arr[8] and arr[13] == arr[14] == arr[15] == arr[16] and arr[17] == arr[18] == arr[19] == arr[20]:
+    if arr[1] == arr[3] == arr[21] == arr[23] and arr[5] == arr[7] == arr[2] == arr[4] and arr[9] == arr[11] == arr[6] == arr[8] and arr[22] == arr[24] == arr[10] == arr[12] and arr[13] == arr[14] == arr[15] == arr[16] and arr[17] == arr[18] == arr[19] == arr[20]:
         return 1
     
     # 가로방향으로 왼쪽/오른쪽 회전
