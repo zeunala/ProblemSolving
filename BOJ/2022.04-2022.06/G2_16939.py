@@ -13,6 +13,8 @@
 * Fail/1st/00:18:50
 - 돌리는 경우의 수가 2가지 더 있어 총 6가지의 경우를 생각해야한다.
 * Fail/2nd/00:30:19
+- 잘못된 코드를 발견하여 수정하였다.
+* Fail/3rd/00:40:53
 '''
 def checkValid(arr):
     # 세로방향으로 위/아래 회전
@@ -20,7 +22,7 @@ def checkValid(arr):
         return 1
     
     # 세로방향으로 아래/위 회전
-    if arr[1] == arr[3] == arr[21] == arr[23] and arr[5] == arr[7] == arr[2] == arr[4] and arr[9] == arr[11] == arr[2] == arr[4] and arr[22] == arr[24] == arr[6] == arr[8] and arr[13] == arr[14] == arr[15] == arr[16] and arr[17] == arr[18] == arr[19] == arr[20]:
+    if arr[1] == arr[3] == arr[21] == arr[23] and arr[5] == arr[7] == arr[2] == arr[4] and arr[9] == arr[11] == arr[10] == arr[12] and arr[22] == arr[24] == arr[6] == arr[8] and arr[13] == arr[14] == arr[15] == arr[16] and arr[17] == arr[18] == arr[19] == arr[20]:
         return 1
     
     # 가로방향으로 왼쪽/오른쪽 회전
