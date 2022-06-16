@@ -12,6 +12,8 @@
 '''
 - 상향식 방법으로 접근하여 1원부터 가장 큰 방 번호를 구하도록 한다.
 * Fail/1st/00:32:10
+- 빼먹는 경우의 수가 없도록 수정하였다.
+* Pass/2nd/00:49:13
 '''
 def addNumber(a, b): # 방 번호가 a일 때 숫자 b를 더한다고 했을 때 가장 큰 방번호 출력
     if a == 0 and b == 0: # 유효하지 않은 경우
@@ -27,7 +29,7 @@ def addNumber(a, b): # 방 번호가 a일 때 숫자 b를 더한다고 했을 �
         result *= 10
         result += e
     return result
-    
+
 N = int(input())
 arrP = list(map(int, input().split())) # arrP[i]는 i번(0~N-1) 숫자의 가격
 M = int(input())
@@ -37,16 +39,35 @@ for i in range(N):
     if arrP[i] <= M:
         maxNumber[arrP[i]] = i # 한 자리만 있는 케이스 (작은 숫자부터 체크하므로 같은 가격이 있으면 큰 숫자가 후에 덮어쓰게 됨)
 
+# maxNumber배열을 누적해서 최댓값으로 갱신
+maxNum = -1
 for i in range(1, M + 1):
     if maxNumber[i] == None:
-        maxNumber[i] = maxNumber[i - 1] # M원을 모두 사용한다고 하였으나 예제 2번의 입력으로 보아 반드시 모두 사용하지 않아도 되는 것으로 판단함
+        if maxNum == -1:
+            continue
+        else:
+            maxNumber[i] = maxNum
+    else:
+        if maxNum < maxNumber[i]:
+            maxNum = maxNumber[i]
+        else:
+            maxNumber[i] = maxNum
+
+maxNum = -1
+for i in range(1, M + 1):
+    if maxNumber[i] == None:
         continue
+    
+    if maxNum < maxNumber[i]:
+        maxNum = maxNumber[i]
+    else:
+        maxNumber[i] = maxNum
     
     for j in range(len(arrP)):
         temp = addNumber(maxNumber[i], j)
         if temp == None:
             continue
-        elif i + arrP[j] <= M and (maxNumber[i + arrP[j]] == None or (temp > maxNumber[i + arrP[j]])):
+        elif i + arrP[j] <= M and temp > maxNumber[i + arrP[j]]:
             maxNumber[i + arrP[j]] = temp
             
 print(maxNumber[M]) 
