@@ -9,7 +9,9 @@
 
 - d(n) >= n이므로 n을 1부터 10000까지 루프 돌리면서 d(n)들을 체크하면 된다.
 * Fail/1st/00:13:28
- */
+- 오타를 수정하였다.
+* Pass/2nd/00:14:14
+*/
 public class S5_4673 {
     public static int calcD(int n) { // 입력 n에 대해 d(n)을 리턴한다.
         int result = n;
@@ -34,7 +36,7 @@ public class S5_4673 {
         // 셀프 넘버 확인
         for (int i = 1; i <= 10000; i++) {
             int temp = calcD(i);
-            if (temp <= 100)
+            if (temp <= 10000)
                 arr[temp] = false;
         }
 
