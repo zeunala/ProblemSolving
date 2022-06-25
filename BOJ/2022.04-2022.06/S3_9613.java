@@ -12,6 +12,8 @@ GCD 합
 
 - 개수가 많지 않으므로 가능한 모든 쌍에 대하여 하나하나 구하도록 한다.
 * Fail/1st/00:11:29
+- gcd의 합이 int 범위를 넘어설 수 있으므로 자료형을 바꾸도록 한다.
+* Pass/2nd/00:15:53
 */
 import java.util.*;
 
@@ -37,14 +39,14 @@ public class S3_9613 {
         for (int i = 0; i < t; i++) {
             int n = sc.nextInt();
             int[] arr = new int[n];
-            int result = 0;
+            long result = 0;
 
             for (int j = 0; j < n; j++)
                 arr[j] = sc.nextInt();
 
             for (int j = 0; j < n - 1; j++) {
                 for (int k = j + 1; k < n; k++) {
-                    result += gcd(arr[j], arr[k]);
+                    result += (long)gcd(arr[j], arr[k]);
                 }
             }
 
