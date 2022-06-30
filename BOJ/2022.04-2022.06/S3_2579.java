@@ -11,6 +11,8 @@
 
 - 1칸/2칸, 2칸 세 가지 경우의 수 중 점수가 최대인 경우를 고르면 된다.
 * Fail/1st/00:17:25
+- 끝 2칸 전에서의 조건을 수정하였다.
+* Fail/2nd/00:20:18
 */
 import java.lang.*;
 import java.util.*;
@@ -31,8 +33,8 @@ public class S3_2579 {
                 dp[i] = arr[i];
             } else if (i == N - 1) { // 끝 1칸 전인 경우 현재 칸과 다음 칸의 점수 먹고 종료
                 dp[i] = arr[i] + arr[i + 1];
-            } else if (i == N - 2) { // 끝 2칸 전의 경우 현재 칸 + 다음 칸 + 다다음칸 점수 먹고 종료(모든 점수는 양수이므로)
-                dp[i] = arr[i] + arr[i + 1] + arr[i + 2];
+            } else if (i == N - 2) { // 끝 2칸 전의 경우 현재 칸 + 다다음칸 점수 먹고 종료
+                dp[i] = arr[i] + arr[i + 2];
             } else if (i == N - 3) { // 끝 3칸 전의 경우 1칸 + 2칸 가는 경우와 2칸 + 1칸 가는 경우 중 최댓값
                 dp[i] = arr[i] + Math.max(arr[i + 1] + arr[i + 3], arr[i + 2] + arr[i + 3]);
             } else { // 그 외에는 1칸/2칸, 2칸 중 최댓값 선택
