@@ -1,4 +1,6 @@
 /*
+학생 번호
+
 입력
 첫째 줄에는 학생의 수 N(2≤N≤1,000)이 주어진다.
 둘째 줄부터 N개의 줄에 걸쳐 각 학생의 학생 번호가 순서대로 주어진다.
@@ -10,6 +12,8 @@
 
 - N과 문자열 길이가 크지 않으므로 k가 1인 경우부터 순서대로 체크한다.
 * Fail/1st/00:10:01
+- 문자열의 길이가 최대 100이므로 int로 받을 수 없기에 String으로 받도록 수정하였다.
+* Pass/2nd/00:13:44
 */
 import java.util.*;
 
@@ -17,21 +21,22 @@ public class S4_1235 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
-        int[] arr = new int[N];
+        String[] arr = new String[N];
 
+        sc.nextLine();
         for (int i = 0; i < N; i++)
-            arr[i] = sc.nextInt();
+            arr[i] = sc.nextLine();
         
         for (int k = 1; ; k++) { // 입력 번호가 모두 다르므로 반드시 종료됨
-            Set<Integer> tempMap = new HashSet<>();
+            Set<String> tempMap = new HashSet<>();
             boolean isValid = true; // 입력 번호가 모두 다르면 true, 그렇지 않으면 false
 
-            for (int e : arr) {
-                if (tempMap.contains(e % (int)Math.pow(10, k))) {
+            for (String e : arr) {
+                if (tempMap.contains(e.substring(e.length() - k))) {
                     isValid = false;
                     break;
                 } else {
-                    tempMap.add(e % (int)Math.pow(10, k));
+                    tempMap.add(e.substring(e.length() - k));
                 }
             }
 
