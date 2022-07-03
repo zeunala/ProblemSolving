@@ -9,15 +9,17 @@
 
 - 결국 10진수 N을 2진수로 바꾸고, 이를 그대로 3진수로 보아 10진수로 바꾸면 되는 문제와 같다.
 * Fail/1st/00:03:50
+- 입력이 int 범위를 넘어갈 수 있기에 수정하였다.
+* Pass/2nd/00:04:58
 */
 import java.util.Scanner;
 
 public class S4_1740 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int answer = 0;
-        int idx = 1;
+        long N = sc.nextLong();
+        long answer = 0;
+        long idx = 1;
 
         while (N > 0) {
             answer += idx * (N % 2);
