@@ -10,6 +10,8 @@
 
 - 주어진 수가 어떤 수의 제곱이면 약수 개수가 홀수이고, 짝수이면 0이 될 것이다.
 * Fail/1st/00:05:17
+- 큰 수가 입력으로 주어질 때도 생각하도록 한다.
+* Pass/2nd/00:11:46
 */
 import java.util.*;
 
@@ -17,12 +19,12 @@ public class S5_11815 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int N = sc.nextInt();
+        long N = sc.nextLong();
         
         for (int i = 0; i < N; i++) {
-            int temp = sc.nextInt();
+            long temp = sc.nextLong();
 
-            int tempSqrt = (int)Math.floor(Math.sqrt((double)temp));
+            long tempSqrt = (long)Math.floor(Math.sqrt((double)temp));
 
             if (tempSqrt * tempSqrt == temp)
                 System.out.print(1);
