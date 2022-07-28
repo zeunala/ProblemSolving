@@ -16,6 +16,8 @@
 '''
 - 파이썬의 집합 자료형을 이용할 수 있다.
 * Fail/1st/00:05:14
+- 출력형식을 수정하였다.
+* Pass/2nd/00:11:59
 '''
 import sys
 
@@ -28,6 +30,7 @@ arrC.sort()
 if len(arrC) == 0:
     print(0)
 else:
+    print(len(arrC))
     for i in range(len(arrC)):
         if i != len(arrC) - 1:
             print(arrC[i], end = " ")
