@@ -10,7 +10,9 @@
 
 '''
 - 매 입력마다 맨 뒤에 있는 0을 자르는 식으로 진행해본다.
-* Fail/1st/00:03:21
+* Fail/1st/00:03:21/TimeOver
+- 시간이 너무 길어지지 않도록 너무 큰 자리수는 자르도록 한다.
+* Pass/2nd/00:04:43
 '''
 N = int(input())
 temp = 1
@@ -19,5 +21,6 @@ for i in range(1, N + 1):
     temp *= i
     while temp % 10 == 0:
         temp //= 10
+    temp %= (10 ** 30)
         
 print(temp % 10)
