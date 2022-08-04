@@ -15,14 +15,17 @@ D와 M의 크기는 50보다 작거나 같고, 그 속에 들어있는 수는 �
 * Fail/1st/00:18:08/TimeOver
 - 시간을 좀 더 짧게 하도록 최적화하였다.
 * Fail/2nd/00:23:30/TimeOver
+- 큰 수 소수 입력을 대비해 checkDiv 함수를 수정하였다.
+* Pass/3rd/00:35:10
 '''
 import math
 from collections import defaultdict
 
 def checkDiv(n, start): # 1이 아닌 n의 약수 중 최솟값 리턴
-    for i in range(start, n + 1):
+    for i in range(start, int(math.sqrt(n)) + 1):
         if n % i == 0:
             return i
+    return n
 
 D, M = map(int, input().split())
 arrD = list(map(int, input().split()))
