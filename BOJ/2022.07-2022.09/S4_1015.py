@@ -14,6 +14,8 @@ N은 50보다 작거나 같은 자연수이고, 배열의 원소는 1,000보다 
 - 정렬된 배열을 하나 더 만들어 기존 배열이 정렬된 배열의 어느 인덱스에 위치하는지 체크한다.
 * Pass/1st/00:07:58
 - 원래는 맨 마지막 공백을 제외해야하나 마지막에 들어간 공백의 경우 무시하고 채점하는 것으로 보인다. 
+* Pass/2nd/00:09:04
+- 마지막 공백 부분을 삭제하고 다시 제출하였다.
 '''
 N = int(input())
 arr = list(map(int, input().split()))
@@ -26,5 +28,8 @@ for e in arr:
     answer.append(targetIndex)
     arrSorted[targetIndex] = None # 중복 원소 고려
     
-for e in answer:
-    print(e, end = " ")
+for i in range(len(answer)):
+    if i != len(answer) - 1:
+        print(answer[i], end = " ")
+    else:
+        print(answer[i])
