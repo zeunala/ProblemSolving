@@ -16,6 +16,8 @@
 '''
 - 지불할 최대 금액들을 기준으로 각 가격별로 이익들을 계산하도록 한다.
 * Fail/1st/00:10:00
+- 이익이 최대인 가격이 여러개일경우 가장 낮은 가격을 출력하도록 한다.
+* Pass/2nd/00:13:03
 '''
 N = int(input())
 arr = []
@@ -33,7 +35,7 @@ for e in availablePrice:
         if a >= e: # 지불가능한 사람들에 한해 배송비를 뺀 금액만큼 금액을 받음
             tempScore += max(0, e - b)
             
-    if bestScore < tempScore:
+    if bestScore < tempScore or (bestScore == tempScore and bestPrice > e):
         bestPrice = e
         bestScore = tempScore
         
