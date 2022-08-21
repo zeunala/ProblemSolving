@@ -15,6 +15,9 @@
 - 숲의 각 칸에 번호를 붙이고, 각 칸 별로 이동할 수 있는 칸 번호를 체크한다.
 무조건 큰 수로 이동할 수 있는 특성상 방문했던 자리로 이동할 수가 없으므로 visited 체크 없이 BFS를 이용한다.
 * Fail/1st/00:17:52
+- 큐가 너무 커지는 것을 막기 위해 visited와 유사하게 각 칸별로 현재까지의 최대 칸수를 저장한 뒤,
+너 칸수를 넘어서는 경우만 저장하도록 수정하였다.
+* Fail/2nd/00:22:55/TimeOver
 '''
 from collections import deque
 
@@ -46,6 +49,7 @@ for i in range(n):
 # 이제 BFS로 최대 몇 칸 이동할 수 있는지 체크한다.  
 answer = 0
 tempDeque = deque() # (현재 위치한 칸, 현재까지 이동한 칸 수) 의 값을 가진다.
+maxStep = [1] * len(arr) # maxStep[i]은 i번칸을 도착지로 했을 때의 최대 칸수를 의미한다.
 for i in range(len(arr)):
     tempDeque.append((i, 1))
     
@@ -56,6 +60,8 @@ while tempDeque:
         answer = b
         
     for e in canMove[a]:
-        tempDeque.append((e, b + 1))
+        if maxStep[e] < b + 1:
+            maxStep[e] = b + 1
+            tempDeque.append((e, b + 1))
         
 print(answer)
