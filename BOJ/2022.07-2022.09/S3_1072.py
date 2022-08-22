@@ -16,13 +16,17 @@ a(99 - Z) >= XZ + X - 100Y
 a >= (XZ + X - 100Y) / (99 - Z)
 Z가 99이상이었다면 아무리 게임을 많이 해도 승률을 높일 수 없으므로 -1을 출력한다.
 * Fail/1st/00:13:12
+- 계산식을 일부 수정하였다.
+* Pass/2nd/00:32:08
+- 다른 사람의 풀이를 보니 기존 Z를 구하는 과정에서 
+29 / 50 * 100 = 57.9999.. 가 나와 floor 결과가 58이 아닌 57이 나오는 것이 문제였던 것으로 보인다.
 '''
 import math
 
 X, Y = map(int, input().split())
-Z = math.floor(Y / X * 100)
+Z = math.floor((100 * Y) / X)
 
 if Z >= 99:
     print(-1)
 else:
-    print(math.ceil((X * Z + X - 100 * Y) / (99 - Z)))
+    print(math.ceil(((X * Z) + X - (100 * Y)) / (99 - Z)))
