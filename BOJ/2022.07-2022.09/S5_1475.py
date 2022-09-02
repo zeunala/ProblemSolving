@@ -11,6 +11,8 @@
 '''
 - 딕셔너리를 이용하여 0~9의 각 등장 횟수를 기록해서 최댓값을 출력하도록 한다. 이 때 6과 9에 주의한다.
 * Fail/1st/00:05:54
+- 6과 9의 균형을 맞추는 부분의 코드를 수정하였다.
+* Pass/2nd/00:07:39
 '''
 from collections import defaultdict
 
@@ -23,5 +25,9 @@ for e in inputString:
 while numDict['6'] < numDict['9']: # 6과 9의 균형을 맞춘다.
     numDict['6'] += 1
     numDict['9'] -= 1
+
+while numDict['9'] < numDict['6']: # 6과 9의 균형을 맞춘다.
+    numDict['9'] += 1
+    numDict['6'] -= 1
 
 print(max(numDict.values()))
