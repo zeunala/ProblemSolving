@@ -16,6 +16,8 @@ G의 범위가 10만까지이고 a^2 - b^2 = (a+b)(a-b) = G에서 a가 50001을 
 따라서 50001까지의 제곱수를 일단 모두 저장하고,
 각 a에 대해서 b^2값이 있으면 그 a값들을 저장해놓았다가 출력하도록 한다.
 * Fail/1st/00:11:23
+- 가능한 몸무게가 없을 경우 -1을 출력하도록 수정하였다.
+* Pass/2nd/00:12:12
 '''
 G = int(input())
 arr = set()
@@ -30,5 +32,8 @@ for i in range(1, 50001): # 각 a값에 대해 b가 존재하는지 확인(b^2 =
 
 answer.sort()
 
-for e in answer:
-    print(e)
+if answer:
+    for e in answer:
+        print(e)
+else:
+    print(-1)
