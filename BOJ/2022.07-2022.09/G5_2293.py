@@ -7,12 +7,14 @@
 동전의 가치는 100,000보다 작거나 같은 자연수이다.
 
 출력
-첫째 줄에 경우의 수를 출력한다. 경우의 수는 231보다 작다.
+첫째 줄에 경우의 수를 출력한다. 경우의 수는 2^31보다 작다.
 '''
 
 '''
 - DP를 이용하여 풀면 될 것으로 보인다.
 * Fail/1st/00:26:26
+- 메모리초과를 막도록 dp를 두 줄만 사용하도록 수정하였다.
+* Fail/2nd/00:31:28
 '''
 n, k = map(int, input().split())
 coinPrice = []
@@ -21,22 +23,26 @@ for i in range(n):
     coinPrice.append(int(input()))
 coinPrice.sort()
 
-dp = [[0 for _ in range(k + 1)] for _ in range(n)] # dp[a][b]는 a번째(a>=0)까지의 동전을 이용해서 b원을 만드는 경우의 수
+dp = [0] * (k + 1) # dp[-1][a]는 동전을 이용해서 a원을 만드는 경우의 수
+dpPrev = [] # 이전 dp 저장
 
-# dp의 첫번째줄을 채움
+# 첫번째 동전만을 사용하는 경우를 채움
 i = 0
 while coinPrice[0] * i <= k:
-    dp[0][coinPrice[0] * i] = 1
+    dp[coinPrice[0] * i] = 1
     i += 1
 
 # 두번째줄부터 나머지를 채움
 for i in range(1, n):
-    dp[i][0] = 1
+    dpPrev = dp[:]
+    dp = [0] * (k + 1)
+    
+    dp[0] = 1
         
     for j in range(1, k + 1):
         if j - coinPrice[i] < 0:
-            dp[i][j] = max(dp[i][j], dp[i - 1][j])
+            dp[j] = max(dp[j], dpPrev[j])
         else:
-            dp[i][j] = dp[i][j - coinPrice[i]] + max(dp[i - 1][j - coinPrice[i]], dp[i - 1][j])
+            dp[j] = dp[j - coinPrice[i]] + max(dpPrev[j - coinPrice[i]], dpPrev[j])
         
-print(dp[-1][-1])
+print(dp[-1])
