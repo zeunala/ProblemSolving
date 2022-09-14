@@ -11,12 +11,14 @@ N자리 수 중에서 신기한 소수를 오름차순으로 정렬해서 한 �
 '''
 - 한 자리 소수 2, 3, 5, 7 기준으로 bfs로 N자리가 될 때까지 하나하나 찾도록 한다.
 * Fail/1st/00:12:47
+- 소수를 판단하는 checkPrime함수의 오류를 발견하여 수정하였다.
+* Pass/2nd/00:14:24
 '''
 from collections import deque
 import math
 
 def checkPrime(n): # n이 소수인지 유무를 리턴
-    for i in range(2, math.floor(math.sqrt(n))):
+    for i in range(2, math.floor(math.sqrt(n)) + 1):
         if n % i == 0:
             return False
     return True
