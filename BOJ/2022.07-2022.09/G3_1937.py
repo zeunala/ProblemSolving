@@ -18,6 +18,8 @@
 - 큐가 너무 커지는 것을 막기 위해 visited와 유사하게 각 칸별로 현재까지의 최대 칸수를 저장한 뒤,
 너 칸수를 넘어서는 경우만 저장하도록 수정하였다.
 * Fail/2nd/00:22:55/TimeOver
+- 반복문의 순서를 바꿔서 1번 시작점으로 하는 경로를 모두 탐색한 후 다음 시작점으로 하는 경로를 탐색하도록 수정하였다.
+* Fail/3rd/00:33:34/TimeOver
 '''
 from collections import deque
 
@@ -50,18 +52,19 @@ for i in range(n):
 answer = 0
 tempDeque = deque() # (현재 위치한 칸, 현재까지 이동한 칸 수) 의 값을 가진다.
 maxStep = [1] * len(arr) # maxStep[i]은 i번칸을 도착지로 했을 때의 최대 칸수를 의미한다.
+
 for i in range(len(arr)):
     tempDeque.append((i, 1))
     
-while tempDeque:
-    (a, b) = tempDeque.popleft()
-    
-    if answer < b: # 현재까지 이동한 칸 수가 높다면 갱신
-        answer = b
+    while tempDeque:
+        (a, b) = tempDeque.popleft()
         
-    for e in canMove[a]:
-        if maxStep[e] < b + 1:
-            maxStep[e] = b + 1
-            tempDeque.append((e, b + 1))
+        if answer < b: # 현재까지 이동한 칸 수가 높다면 갱신
+            answer = b
+            
+        for e in canMove[a]:
+            if maxStep[e] < b + 1:
+                maxStep[e] = b + 1
+                tempDeque.append((e, b + 1))
         
 print(answer)
