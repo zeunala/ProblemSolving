@@ -17,6 +17,8 @@ m 번의 차례를 모두 처리한 이후에도 종료되지 않았다면 0을 
 - 각 점마다 parent 변수를 두고, 번호가 적은걸 부모로 하여 연결한다.
 만약 parent가 같은 두 점을 연결하려고 하면 그 순간 사이클이 만들어진 것이다.
 * Fail/1st/00:11:08
+- 잘못 작성한 부분을 수정하였고 추가로 최적화과정도 추가하였다.
+* Fail/2nd/00:15:42
 '''
 import sys
 
@@ -26,16 +28,16 @@ def findParent(parentArr, i): # i번의 parent를 찾는다.
     return parentArr[i]
 
 def union(parentArr, i, j): # i번 점과 j번 점을 합치고 사이클 유무를 리턴한다.
-    parentI = findParent(parentArr, i)
-    parentJ = findParent(parentArr, j)
+    parentArr[i] = findParent(parentArr, i)
+    parentArr[j] = findParent(parentArr, j)
     
-    if parentI == parentJ: # 이미 같은 부모, 즉 사이클 형성되는 경우
+    if parentArr[i] == parentArr[j]: # 이미 같은 부모, 즉 사이클 형성되는 경우
         return True
     else:
         if i < j: # i가 부모
             parentArr[j] = parentArr[i]
         else: # j가 부모
-            parentArr[i] = j
+            parentArr[i] = parentArr[j]
         
         return False
 
