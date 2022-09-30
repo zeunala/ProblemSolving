@@ -19,6 +19,8 @@ m 번의 차례를 모두 처리한 이후에도 종료되지 않았다면 0을 
 * Fail/1st/00:11:08
 - 잘못 작성한 부분을 수정하였고 추가로 최적화과정도 추가하였다.
 * Fail/2nd/00:15:42
+- 2 3 / 2 4 / 1 4 / 1 2 같은 반례를 막도록 parentArr 갱신 코드를 수정하였다.
+* Pass/3rd/00:37:56
 '''
 import sys
 
@@ -35,9 +37,9 @@ def union(parentArr, i, j): # i번 점과 j번 점을 합치고 사이클 유무
         return True
     else:
         if i < j: # i가 부모
-            parentArr[j] = parentArr[i]
+            parentArr[parentArr[j]] = parentArr[i]
         else: # j가 부모
-            parentArr[i] = parentArr[j]
+            parentArr[parentArr[i]] = parentArr[j]
         
         return False
 
@@ -52,5 +54,5 @@ for i in range(1, m + 1):
     if answer == 0: # 중간에 사이클이 나오지 않은 경우만 체크
         if union(parentArr, a, b):
             answer = i
-            
+
 print(answer)
