@@ -13,6 +13,8 @@
 '''
 - 플러그를 빼기 전 최대한 늦게 이용될 전기용품을 교체하도록 한다.
 * Fail/1st/00:16:11
+- 이미 멀티탭에 연결 중인 상황에서 바로 continue를 하지 않고 다음 사용 횟수를 갱신하도록 수정하였다.
+* Pass/2nd/00:17:05
 '''
 N, K = map(int, input().split()) # N: 멀티탭 구멍의 개수, K: 전기 용품의 총 사용횟수
 arr = list(map(int, input().split()))
@@ -24,14 +26,14 @@ INF = 10**10
 
 for i in range(K):
     if arr[i] in currentPlug: # 이미 멀티탭에 연결중인 상황이면 상관이 없다.
-        continue
-        
-    if len(currentPlug) < N: # 멀티탭 구멍 개수가 남으면 일단 꽂는다
-        currentPlug.append(arr[i])
-    else: # 자리가 부족한 경우
-        currentPlug.sort(key = lambda x : -nextUseDict[x]) # 다음에 가장 늦게 사용되는 걸 맨 앞에 오도록 arr을 재배열한다.
-        currentPlug[0] = arr[i]
-        answer += 1
+        pass
+    else:
+        if len(currentPlug) < N: # 멀티탭 구멍 개수가 남으면 일단 꽂는다
+            currentPlug.append(arr[i])
+        else: # 자리가 부족한 경우
+            currentPlug.sort(key = lambda x : -nextUseDict[x]) # 다음에 가장 늦게 사용되는 걸 맨 앞에 오도록 arr을 재배열한다.
+            currentPlug[0] = arr[i]
+            answer += 1
         
     # 플러그에 꽂으면서 다음에 몇 번째로 사용되는지도 저장해둔다
     if arr[i] in arr[i+1:]:
