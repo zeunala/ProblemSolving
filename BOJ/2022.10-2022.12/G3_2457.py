@@ -14,6 +14,8 @@
 '''
 - 우선 월/일을 숫자로 변환시킨 후, 꽃이 없는 날이 없도록 하면서 가장 늦게 지는 꽃을 그리디 알고리즘으로 선택한다.
 * Fail/1st/00:26:10
+- 1 / 1 1 5 31 같은 반례가 존재하여 while문의 조건을 수정하였다.
+* Pass/2nd/00:27:56
 '''
 import sys
 
@@ -41,7 +43,7 @@ arr.sort(key = lambda x : x[0], reverse = True) # 빨리 피는 게 스택의 �
 today = monthDayToNum(3, 1) # 아무리 늦어도 이 때까지는 꽃이 새로 피어야하는 날짜
 answer = 0
 
-while arr and today < monthDayToNum(12, 1):
+while today < monthDayToNum(12, 1):
     currentStack = [] # 꽃을 선택하는 후보군들의 목록. 꽃이 피어야 하는 상황일 경우 여기서 가장 늦게 피는 꽃을 고른다.
     
     while arr and arr[-1][0] <= today:
