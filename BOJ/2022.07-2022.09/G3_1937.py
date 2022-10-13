@@ -20,8 +20,11 @@
 * Fail/2nd/00:22:55/TimeOver
 - 반복문의 순서를 바꿔서 1번 시작점으로 하는 경로를 모두 탐색한 후 다음 시작점으로 하는 경로를 탐색하도록 수정하였다.
 * Fail/3rd/00:33:34/TimeOver
+- 대나무가 적은 곳부터 탐색해서 중복탐색을 최소화시키도록 한다.
+* Fail/4th/00:49:40/TimeOver
 '''
 from collections import deque
+import heapq
 
 n = int(input())
 arr = [] # 0번 ~ n^2-1번 까지의 값 존재
@@ -53,7 +56,13 @@ answer = 0
 tempDeque = deque() # (현재 위치한 칸, 현재까지 이동한 칸 수) 의 값을 가진다.
 maxStep = [1] * len(arr) # maxStep[i]은 i번칸을 도착지로 했을 때의 최대 칸수를 의미한다.
 
+tempHeap = [] # (arr[i], i) 을 저장해서 대나무가 적은게 우선시되는 힙을 만든다.
 for i in range(len(arr)):
+    heapq.heappush(tempHeap, (arr[i], i))
+
+while tempHeap: # 대나무가 가장 적은 것부터 탐색
+    _, i = heapq.heappop(tempHeap) 
+
     tempDeque.append((i, 1))
     
     while tempDeque:
