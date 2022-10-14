@@ -22,6 +22,8 @@
 * Fail/3rd/00:33:34/TimeOver
 - 대나무가 적은 곳부터 탐색해서 중복탐색을 최소화시키도록 한다.
 * Fail/4th/00:49:40/TimeOver
+- 최적화 작업을 추가하였다.
+* Fail/5th/00:52:35/TimeOver
 '''
 from collections import deque
 import heapq
@@ -63,6 +65,9 @@ for i in range(len(arr)):
 while tempHeap: # 대나무가 가장 적은 것부터 탐색
     _, i = heapq.heappop(tempHeap) 
 
+    if maxStep[i] > 1: # 이미 방문한 경우엔 굳이 탐색 안해도 된다.
+        continue
+    
     tempDeque.append((i, 1))
     
     while tempDeque:
