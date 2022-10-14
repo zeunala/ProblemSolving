@@ -24,6 +24,9 @@
 * Fail/4th/00:49:40/TimeOver
 - 최적화 작업을 추가하였다.
 * Fail/5th/00:52:35/TimeOver
+- canMove 목록에서 탐색할 때 대나무가 적은 곳부터 먼저 가도록 하고,
+추가로 DFS로 탐색하도록 수정하였다.
+* Fail/6th/00:57:33/TimeOver
 '''
 from collections import deque
 import heapq
@@ -52,10 +55,13 @@ for i in range(n):
         # 오른쪽으로 이동할 수 있는지 체크
         if j + 1 < n and arr[n * i + j] < arr[n * i + (j + 1)]:
             canMove[n * i + j].append(n * i + (j + 1))
+            
+        # canMove를 대나무가 적은게 앞에 오도록 재배치한다.
+        canMove[n + i * j].sort(key = lambda x : arr[x])
           
 # 이제 BFS로 최대 몇 칸 이동할 수 있는지 체크한다.  
 answer = 0
-tempDeque = deque() # (현재 위치한 칸, 현재까지 이동한 칸 수) 의 값을 가진다.
+tempStack = [] # (현재 위치한 칸, 현재까지 이동한 칸 수) 의 값을 가진다.
 maxStep = [1] * len(arr) # maxStep[i]은 i번칸을 도착지로 했을 때의 최대 칸수를 의미한다.
 
 tempHeap = [] # (arr[i], i) 을 저장해서 대나무가 적은게 우선시되는 힙을 만든다.
@@ -68,10 +74,10 @@ while tempHeap: # 대나무가 가장 적은 것부터 탐색
     if maxStep[i] > 1: # 이미 방문한 경우엔 굳이 탐색 안해도 된다.
         continue
     
-    tempDeque.append((i, 1))
+    tempStack.append((i, 1))
     
-    while tempDeque:
-        (a, b) = tempDeque.popleft()
+    while tempStack:
+        (a, b) = tempStack.pop()
         
         if answer < b: # 현재까지 이동한 칸 수가 높다면 갱신
             answer = b
@@ -79,6 +85,6 @@ while tempHeap: # 대나무가 가장 적은 것부터 탐색
         for e in canMove[a]:
             if maxStep[e] < b + 1:
                 maxStep[e] = b + 1
-                tempDeque.append((e, b + 1))
+                tempStack.append((e, b + 1))
         
 print(answer)
