@@ -27,8 +27,11 @@
 - canMove 목록에서 탐색할 때 대나무가 적은 곳부터 먼저 가도록 하고,
 추가로 DFS로 탐색하도록 수정하였다.
 * Fail/6th/00:57:33/TimeOver
+- 스택대신 우선순위 큐를 사용하여 대나무가 적은 곳부터 방문하도록 수정하였다.
+* Pass/7th/01:14:08
+- 문제 풀이 이후 다른 사람의 풀이를 찾아본 결과 dp + dfs를 활용해서 dfs탐색하되,
+이미 dp배열(앞으로 더 방문할 수 있는 개수 저장)에 결과가 있다면 그걸 사용하도록 하는 방법도 있음을 알게 되었다.
 '''
-from collections import deque
 import heapq
 
 n = int(input())
@@ -61,30 +64,25 @@ for i in range(n):
           
 # 이제 BFS로 최대 몇 칸 이동할 수 있는지 체크한다.  
 answer = 0
-tempStack = [] # (현재 위치한 칸, 현재까지 이동한 칸 수) 의 값을 가진다.
+tempHeap = [] # (-현재까지 이동한 칸 수, 현재 위치한 칸)의 최소힙이며 따라서 현재 많이 이동한 곳부터 먼저 방문하게 된다.
 maxStep = [1] * len(arr) # maxStep[i]은 i번칸을 도착지로 했을 때의 최대 칸수를 의미한다.
 
-tempHeap = [] # (arr[i], i) 을 저장해서 대나무가 적은게 우선시되는 힙을 만든다.
+visitedOrderHeap = [] # (arr[i], i, step) 을 저장해서 대나무가 적은게 우선시되는 힙을 만든다.
 for i in range(len(arr)):
-    heapq.heappush(tempHeap, (arr[i], i))
+    heapq.heappush(visitedOrderHeap, (arr[i], i, 1))
 
-while tempHeap: # 대나무가 가장 적은 것부터 탐색
-    _, i = heapq.heappop(tempHeap) 
+while visitedOrderHeap: # 대나무가 가장 적은 곳부터 탐색
+    _, i, step = heapq.heappop(visitedOrderHeap)
 
-    if maxStep[i] > 1: # 이미 방문한 경우엔 굳이 탐색 안해도 된다.
+    if maxStep[i] > step: # 이미 더 높은 step으로 방문한적 있는 경우엔 굳이 탐색 안해도 된다.
         continue
     
-    tempStack.append((i, 1))
-    
-    while tempStack:
-        (a, b) = tempStack.pop()
+    if answer < step: # 현재까지 이동한 칸 수가 높다면 갱신
+        answer = step
         
-        if answer < b: # 현재까지 이동한 칸 수가 높다면 갱신
-            answer = b
-            
-        for e in canMove[a]:
-            if maxStep[e] < b + 1:
-                maxStep[e] = b + 1
-                tempStack.append((e, b + 1))
+    for e in canMove[i]:
+        if maxStep[e] < step + 1:
+            maxStep[e] = step + 1
+            heapq.heappush(visitedOrderHeap, (arr[i], e, step + 1))
         
 print(answer)
