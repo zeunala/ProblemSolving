@@ -13,17 +13,20 @@
 '''
 - 파이썬의 set을 이용하면 쉽게 계산할 수 있다.
 * Fail/1st/00:04:37
+- 테스트케이스 수에 대한 코드를 빠뜨려서 수정하였다.
+* Pass/2nd/00:10:56
 '''
 import sys
 
 T = int(sys.stdin.readline().rstrip())
-arrLen1 = int(sys.stdin.readline().rstrip())
-arr1 = set(map(int, sys.stdin.readline().rstrip().split()))
-arrLen2 = int(sys.stdin.readline().rstrip())
-arr2 = list(map(int, sys.stdin.readline().rstrip().split()))
 
-for e in arr2:
-    if e in arr1:
-        print(1)
-    else:
-        print(0)
+for case in range(T):
+    arrLen1 = int(sys.stdin.readline().rstrip())
+    arr1 = set(map(int, sys.stdin.readline().rstrip().split()))
+    arrLen2 = int(sys.stdin.readline().rstrip())
+    arr2 = list(map(int, sys.stdin.readline().rstrip().split()))
+    for e in arr2:
+        if e in arr1:
+            print(1)
+        else:
+            print(0)
