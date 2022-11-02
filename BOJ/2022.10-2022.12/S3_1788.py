@@ -13,12 +13,16 @@
 '''
 - F(n)을 절댓값이 1인 경우부터 구해나간다.
 * Fail/1st/00:24:14/IndexError
+- n의 절댓값이 100만인 경우를 추가하였다.
+* Pass/2nd/00:24:51
+- 문제 풀이 이후 다른 사람의 풀이를 본 결과 음의 피보나치의 수는 양의 피보나치일 때와 절댓값은 같고,
+n의 절댓값이 짝수일 때만 음수가 붙는 형태임을 알게 되었다.
 '''
 n = int(input())
 plusF = [0, 1] # plusF[i]는 F(i)를 가리킴
 minusF = [0, 1] # minusF[i]는 F(-i)를 가리킴
 
-for i in range(2, 1000000):
+for i in range(2, 1000001):
     nextPlus = (plusF[i - 2] + plusF[i - 1]) % 1000000000
     nextMinus = abs(minusF[i - 2] - minusF[i - 1]) % 1000000000
     if minusF[i - 2] - minusF[i - 1] < 0:
