@@ -14,6 +14,8 @@
 - A, B에서 얻을 수 있는 합과 C, D에서 얻을 수 있는 합 두 부분으로 나눈다.
 전자의 합에 대해 합이 0이 되도록 하는 후자의 합이 몇 개 인지를 기록해두도록 한다.
 * Fail/1st/00:09:05/TimeLimitExceeded
+- 오류를 수정하고 더 빠르게 계산할 방법을 고민해본다.
+* Fail/2nd/00:23:21/TimeLimitExceeded
 '''
 from collections import defaultdict
 import sys
@@ -41,6 +43,7 @@ for i in range(N):
         dictCD[C[i] + D[j]] += 1
 
 for e in dictAB.keys():
-    answer += dictCD[-e] # dictAB + dictCD의 원소 합이 0이 되는 경우들을 찾는다.
+    if -e in dictCD:
+        answer += dictAB[e] * dictCD[-e] # dictAB + dictCD의 원소 합이 0이 되는 경우들을 찾는다.
     
 print(answer)
