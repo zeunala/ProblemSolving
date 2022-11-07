@@ -9,6 +9,8 @@
 
 - 수의 범위가 작으므로 1부터 해당 수까지를 하나하나 체크해본다.
 * Fail/1st/00:15:08
+- 두 번째 수를 1이상의 수를 선택하도록 for문의 조건을 수정하였다.
+* Fail/2nd/00:20:16
 */
 
 import java.io.BufferedReader;
@@ -26,7 +28,7 @@ public class S5_2635 {
         int answer = 0; // 최대 개수
         List<Integer> answerArr = new ArrayList<>(); // 그 때의 수들
 
-        for (int i = 1; i <= N; i++) {
+        for (int i = 1; i < N; i++) {
             List<Integer> tempArr = new ArrayList<>();
             int nextNum = N - i;
 
