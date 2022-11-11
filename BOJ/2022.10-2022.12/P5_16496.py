@@ -16,6 +16,8 @@
 A, B중 숫자를 그대로 이은 AB, BA를 만들어 AB가 크다면 A가, BA가 크다면 B가 큰 걸로 한다.
 ex. 353와 35의 경우 35335 < 35353 이므로 35가, 353과 3의 경우 3533 > 3353 이므로 353이 더 큰 걸로 한다. 
 * Fail/1st/00:38:23
+- 숫자가 0 하나만 있는 경우에 대한 예외처리를 추가하였다.
+* Pass/2nd/00:40:44
 '''
 def isRightBigger(a, b): # a < b이면 True, 그렇지 않으면 False 리턴 (a와 b는 문자열)
     if a + b < b + a:
@@ -31,5 +33,8 @@ for i in range(len(arr)):
         if isRightBigger(arr[j], arr[j + 1]): # 문자열이 가장 작은게 뒤로 오도록 정렬
             arr[j], arr[j + 1] = arr[j + 1], arr[j]
             
-for e in arr:
-    print(e, end = "")
+if arr[0] == "0": # 문자열이 가장 큰 게 0일 경우, 즉 모든 문자열이 0일 경우 0하나만 출력
+    print(0)
+else:
+    for e in arr:
+        print(e, end = "")
