@@ -17,6 +17,8 @@ M번째 칸에서 뛰기 시작해서 N-M+1번째 칸에서 멈춘다고 가정�
 - 각 구간 별로의 최댓값을 알고 싶으므로 최대힙을 이용한다.
 이 때, 시야에 벗어난 광고판의 세기를 보관해놨다가 최대힙의 값이 그것이라면 제외한다.
 * Fail/1st/00:20:44
+- 잘못 작성한 코드를 수정하였다.
+* Pass/2nd/00:27:44
 '''
 import sys
 import heapq
@@ -34,7 +36,7 @@ for i in range(2 * M - 1): # 초깃값 세팅
 print(-currentView[0], end = " ")
 
 for i in range(2 * M - 1, N):
-    removedView[-currentView[i - (2 * M - 1)]] += 1 # 이미 지나쳐서 사라진 광고판의 세기
+    removedView[arr[i - (2 * M - 1)]] += 1 # 이미 지나쳐서 사라진 광고판의 세기
     heapq.heappush(currentView, -arr[i]) # 새로 들어온 광고판의 세기
     
     while removedView[-currentView[0]] > 0: # 만약 최댓값이 이미 사라진 광고판이었다면 그걸 제거해야한다.
