@@ -16,6 +16,8 @@ Knight, Queen, Pawn의 개수는 각각 100을 넘지 않는 음이 아닌 정�
 '''
 - 말의 개수가 많지 않으므로 하나하나 구현해본다.
 * Fail/1st/00:22:14
+- print문을 잘못 작성한 곳이 있어 삭제하였다.
+* Pass/2nd/00:24:30
 '''
 n, m = map(int, input().split())
 queenArr = list(map(int, input().split()))[1:]
@@ -34,7 +36,6 @@ for i in range(len(pawnArr) // 2):
 
 for i in range(len(knightArr) // 2):
     x, y = knightArr[2 * i], knightArr[2 * i + 1]
-    print(x, y)
     for (dx, dy) in [(-2, -1), (-1, -2), (1, 2), (2, 1), (2, -1), (1, -2), (-1, 2), (-2, 1)]:
         if x + dx >= 1 and x + dx <= n and y + dy >= 1 and y + dy <= m and (x + dx, y + dy) not in posSet:
             isDanger.add((x + dx, y + dy))
