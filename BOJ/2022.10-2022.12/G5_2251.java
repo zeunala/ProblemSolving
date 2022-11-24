@@ -10,6 +10,8 @@
 
 - A와 C의 차이(A<=B<=C), B와 C의 차이(B<=C), A(C-A<=B), B(C-B<=A), C 다섯 경우가 가능하다.
 * Fail/1st/00:16:55
+- A, B가 그대로 가능한 경우는 각각 A<=C, B<=C 역시 추가로 만족해야 가능하고, 또한 B>=C인 경우 0도 가능하다. 
+* Fail/2nd/00:21:37
 */
 import java.util.*;
 
@@ -28,13 +30,16 @@ public class G5_2251 {
         if (B <= C) {
             allCase.add(C - B);
         }
-        if (C - A <= B) {
+        if (C - A <= B && A <= C) {
             allCase.add(A);
         }
-        if (C - B <= A) {
+        if (C - B <= A && B <= C) {
             allCase.add(B);
         }
         allCase.add(C);
+        if (B >= C) {
+            allCase.add(0);
+        }
 
         List<Integer> sortedCase = new ArrayList<>(allCase);
         Collections.sort(sortedCase);
