@@ -12,6 +12,8 @@
 * Fail/1st/00:16:55
 - A, B가 그대로 가능한 경우는 각각 A<=C, B<=C 역시 추가로 만족해야 가능하고, 또한 B>=C인 경우 0도 가능하다. 
 * Fail/2nd/00:21:37
+- 2 4 3의 경우 0 0 3 -> 2 0 1 -> 0 2 1 과 같이 되므로 A와 C의 차이는 A<=B, A<=C일 때 가능하다.
+* Fail/3rd/00:28:22
 */
 import java.util.*;
 
@@ -24,7 +26,7 @@ public class G5_2251 {
         int B = sc.nextInt();
         int C = sc.nextInt();
         
-        if (A <= B && B <= C) {
+        if (A <= B && A <= C) {
             allCase.add(C - A);
         }
         if (B <= C) {
