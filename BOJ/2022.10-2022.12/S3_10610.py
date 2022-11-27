@@ -16,14 +16,18 @@ N을 입력받는다. N는 최대 10^5개의 숫자로 구성되어 있으며, 0
 만약 3k+1꼴인 경우, 1/4/7 중 1개를 빼거나, 못 뺄 경우 2/5/8 중 2개를 뺀다.
 3k+2꼴인 경우, 2/5/8 중 1개를 빼거나, 못 뺄 경우 2/5/8 중 2개를 뺀다.
 * Fail/1st/00:14:58
+- 출력초과 오류가 나서 printMax함수를 수정하였다.
+* Fail/2nd/00:19:21
 '''
 import sys
 
-def printMax(digitArr): # 현재 digitArr에서 나올 수 있는 최댓값 출력
+def getMaxNum(digitArr): # 현재 digitArr에서 나올 수 있는 최댓값 출력
+    result = ""
     for i in range(9, -1, -1):
         while digitArr[i] > 0:
             digitArr[i] -= 1
-            print(i, end = "")
+            result += str(i)
+    return result
     
 N = sys.stdin.readline().rstrip()
 digitArr = [0] * 10 # digitArr[i]는 i가 몇 번 나왔는지 카운트함
@@ -72,4 +76,4 @@ else:
     if sum(digitArr[1:]) == 0: # 220같이 숫자들을 다 뺐을 때 0만 남는 경우가 있을 수 있다.
         print(-1)
     else:
-        printMax(digitArr)
+        print(getMaxNum(digitArr))
