@@ -15,6 +15,8 @@ K개의 줄에 순서대로 배열의 합을 출력한다. 배열의 합은 2^31
 '''
 - 이차원 배열의 부분합을 구해서 계산하도록 한다.
 * Fail/1st/00:29:33
+- 잘못 작성한 print문을 삭제하였다.
+* Pass/2nd/00:30:04
 '''
 import sys
 
@@ -41,10 +43,8 @@ for i in range(N):
 arrSum.insert(0, [0] * (M + 1))
 for i in range(1, N + 1):
     arrSum[i].insert(0, 0)
-print(arrSum)
         
 K = int(sys.stdin.readline().rstrip())
 for i in range(K):
     i, j, x, y = map(int, sys.stdin.readline().rstrip().split())
-    print(arrSum)
     print(arrSum[x][y] - arrSum[x][j - 1] - arrSum[i - 1][y] + arrSum[i - 1][j - 1])
