@@ -20,9 +20,18 @@ N개의 용액들의 특성값은 모두 다르고, 산성 용액만으로나 �
 * Fail/1st/00:32:48
 - 정렬하지 않은 상태로 bisect를 호출한 것이 문제로 보여 수정하였다.
 * Fail/2nd/00:42:57/MemoryLimitExceeded
+- plus2Comp, minus2Comp 용량이 큰 것으로 인해 메모리 초과가 난 것으로 보여 이를 삭제하였다.
+* Pass/3rd/00:54:07(use PyPy3)
+- 문제 풀이 이후 다른 사람의 풀이를 찾아본 결과, 기준점 하나를 잡고 양 끝에서부터 투 포인터를 활용하는 방식으로도 풀 수 있음을 알게 되었다.
 '''
 import sys
 from bisect import bisect_left
+
+def findElementOfSum(arr, sum): # 배열 arr에서 합이 sum이 되는 두 원소를 찾음
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            if arr[i] + arr[j] == sum:
+                return (arr[i], arr[j])
 
 N = int(sys.stdin.readline().rstrip())
 arr = list(map(int, sys.stdin.readline().rstrip().split()))
@@ -30,9 +39,7 @@ arr = list(map(int, sys.stdin.readline().rstrip().split()))
 plus = [] # 산성들의 배열
 minus = [] # 염기성들의 배열
 plus2 = [] # 산성 2개를 합친 경우들
-plus2Comp = {} # plus2Comp[i]는 합이 i가 되는 경우가 어떤 두 용액에서 나왔는지 저장함
 minus2 = [] # 염기성 2개를 합친 경우들
-minus2Comp = {} # minus2Comp[i]는 합이 i가 되는 경우가 어떤 두 용액에서 나왔는지 저장함
 
 for e in arr:
     if e >= 0:
@@ -46,12 +53,10 @@ minus.sort()
 for i in range(len(plus)):
     for j in range(i+1, len(plus)):
         plus2.append(plus[i]+plus[j])
-        plus2Comp[plus[i]+plus[j]] = (plus[i], plus[j])
         
 for i in range(len(minus)):
     for j in range(i+1, len(minus)):
         minus2.append(minus[i]+minus[j])
-        minus2Comp[minus[i]+minus[j]] = (minus[i], minus[j])
 
 plus2.sort()
 minus2.sort()
@@ -72,25 +77,31 @@ for e in minus: # (산, 산, 염)의 경우를 찾음
     idx = bisect_left(plus2, -e) # -e에 가장 가까운 걸 찾는다
     if idx < len(plus2) and PPMCase > abs(e + plus2[idx]):
         PPMCase = abs(e + plus2[idx])
-        PPMCaseComp = (e, plus2Comp[plus2[idx]][0], plus2Comp[plus2[idx]][1])
+        temp1, temp2 = findElementOfSum(plus, plus2[idx])
+        PPMCaseComp = (e, temp1, temp2)
     if idx - 1 >= 0 and PPMCase > abs(e + plus2[idx - 1]): # idx 앞뒤로도 찾아본다
         PPMCase = abs(e + plus2[idx - 1])
-        PPMCaseComp = (e, plus2Comp[plus2[idx - 1]][0], plus2Comp[plus2[idx - 1]][1])
+        temp1, temp2 = findElementOfSum(plus, plus2[idx - 1])
+        PPMCaseComp = (e, temp1, temp2)
     if idx + 1 < len(plus2) and PPMCase > abs(e + plus2[idx + 1]):
         PPMCase = abs(e + plus2[idx + 1])
-        PPMCaseComp = (e, plus2Comp[plus2[idx + 1]][0], plus2Comp[plus2[idx + 1]][1])
+        temp1, temp2 = findElementOfSum(plus, plus2[idx + 1])
+        PPMCaseComp = (e, temp1, temp2)
         
 for e in plus: # (산, 염, 염)의 경우를 찾음
     idx = bisect_left(minus2, -e) # -e에 가장 가까운 걸 찾는다
     if idx < len(minus2) and PMMCase > abs(e + minus2[idx]):
         PMMCase = abs(e + minus2[idx])
-        PMMCaseComp = (minus2Comp[minus2[idx]][0], minus2Comp[minus2[idx]][1], e)
+        temp1, temp2 = findElementOfSum(minus, minus2[idx])
+        PMMCaseComp = (temp1, temp2, e)
     if idx - 1 >= 0 and PMMCase > abs(e + minus2[idx - 1]): # idx 앞뒤로도 찾아본다
         PMMCase = abs(e + minus2[idx - 1])
-        PMMCaseComp = (minus2Comp[minus2[idx - 1]][0], minus2Comp[minus2[idx - 1]][1], e)
+        temp1, temp2 = findElementOfSum(minus, minus2[idx - 1])
+        PMMCaseComp = (temp1, temp2, e)
     if idx + 1 < len(minus2) and abs(PMMCase > e + minus2[idx + 1]):
         PMMCase = abs(e + minus2[idx + 1])
-        PMMCaseComp = (minus2Comp[minus2[idx + 1]][0], minus2Comp[minus2[idx + 1]][1], e)
+        temp1, temp2 = findElementOfSum(minus, minus2[idx + 1])
+        PMMCaseComp = (temp1, temp2, e)
 
 # 결과 출력
 if PPPCase <= PPMCase and PPPCase <= PMMCase and PPPCase <= MMMCase:
