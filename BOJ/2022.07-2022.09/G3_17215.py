@@ -12,6 +12,8 @@
 '''
 - 문제 요구사항을 그대로 구현하면 되는 문제로 보인다.
 * Fail/1st/00:26:18
+- 10번째 프레임에서 스트라이크가 난 경우에 대한 처리를 추가하고, 추가 프레임에서 스페어가 가능하다고 보고 그에 대한 처리도 한다.
+* Pass/2nd/00:39:03
 '''
 inputSentence = input().replace("-", "0") # S, P, 숫자만 남기기 위해, 입력에서 -을 0으로 변경함
 
@@ -27,6 +29,8 @@ while idx < len(inputSentence):
     if tryCount > 9: # 추가 프레임의 경우
         if inputSentence[idx] == 'S':
             arr1st[tryCount] = 10
+        elif inputSentence[idx] == 'P':
+            arr1st[tryCount] = 10 - arr1st[tryCount - 1]
         else:
             arr1st[tryCount] = int(inputSentence[idx])
         idx += 1
@@ -54,8 +58,8 @@ for i in range(10):
         # 1회
         totalScore += arr1st[i + 1]
         
-        # 2회(1회때 스트라이크가 날 경우 남은 핀을 굴리는게 아니라 새로운 핀들 상태에서 굴리므로 이에 대한 처리)
-        if arr1st[i + 1] == 10:
+        # 2회(1회때 스트라이크가 날 경우 또는 10번째 프레임에서 스트라이크가 난 경우 다음 프레임에서 굴리므로 이에 대한 처리)
+        if arr1st[i + 1] == 10 or i == 9:
             totalScore += arr1st[i + 2]
         else:
             totalScore += arr2nd[i + 1]
