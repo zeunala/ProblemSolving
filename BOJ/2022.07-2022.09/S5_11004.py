@@ -14,35 +14,12 @@ A를 정렬했을 때, 앞에서부터 K번째 있는 수를 출력한다.
 * Fail/1st/00:20:27
 - 재귀호출을 사용하지 않는 방향으로 진행한다.
 * Fail/2nd/00:26:13/TimeOver
+- 파이썬의 sort를 그대로 이용하는 방법으로 시도해본다.
+* Pass/3rd/00:37:26
 '''
 import sys
 
-def findIndex(arr, n): # 배열 arr에서 n번째로 큰 수를 찾는다.
-    while True:
-        if len(arr) == 1:
-            return arr[0]
-        
-        target = arr[0] # 첫번째 수를 기준으로
-        arrSmall = [] # 그 수보다 작은 그룹과
-        arrBig = [] # 그 수보다 큰 그룹으로 나눈다.
-        
-        for i in range(1, len(arr)):
-            if target > arr[i]:
-                arrSmall.append(arr[i])
-            else:
-                arrBig.append(arr[i])
-            
-        if n > len(arrSmall) and len(arr) - n >= len(arrBig): # arr의 첫번째 수가 마침 n번째로 큰 수였다면 그걸 바로 리턴
-            return target
-        elif n <= len(arrSmall):
-            arr = arrSmall
-            continue
-        else:
-            n -= (len(arr) - len(arrBig))
-            arr = arrBig
-            continue
-    
-
 N, K = map(int, sys.stdin.readline().rstrip().split())
 arr = list(map(int, sys.stdin.readline().rstrip().split()))
-print(findIndex(arr, K))
+arr.sort()
+print(arr[K - 1])
