@@ -25,20 +25,36 @@
 * Fail/5th/01:39:45/TimeOver
 - 각 좌표마다 1*1~5*5를 체크하는 방식으로 수정하였다.
 * Fail/6th/02:31:19/TimeOver
+- 자리가 있는지 확인하는 함수/배열을 새로 만들어서 생성하는 함수를 분리해서 최적화하였다.
+* Fail/7th/03:09:35/TimeOver
 '''
 from copy import deepcopy
 
-def canUse(arr, N, a, b): # arr[a][b]부터 N*N 종이 자리가 있는지 체크해서 쓸 수 있다면 그 자리를 0으로 바꾼 배열 리턴. 자리가 없다면 None 리턴
+def checkMaxN(arr, a, b): # arr[a][b]부터 N*N 종이 자리가 있는지 N의 최댓값 리턴
+    for N in range(5, 0, -1):
+        if a+(N-1) >= 10 or b+(N-1) >= 10: # 범위 넘길 수 없음
+            continue
+        
+        isValid = True
+        for i in range(N):
+            if isValid == False:
+                break
+            
+            for j in range(N):
+                if arr[a+i][b+j] == 0:
+                    isValid = False
+                    break
+        if isValid == False:
+            continue
+                
+        return N
+
+def getChangedArr(arr, N, a, b): # arr[a][b]부터 N*N 자리를 0으로 바꾼 배열 리턴
     resultArr = deepcopy(arr)
-    if a+(N-1) >= 10 or b+(N-1) >= 10: # 범위 넘길 수 없음
-        return None
 
     for i in range(N):
         for j in range(N):
-            if resultArr[a+i][b+j] == 1:
-                resultArr[a+i][b+j] = 0
-            else:
-                return None
+            resultArr[a+i][b+j] = 0
     
     return resultArr
 
@@ -62,49 +78,39 @@ def checkArea(arr, one, two, three, four, five, currentI, currentJ): # arr과 �
             
             if arr[i][j] == 1: # 종이로 덮어야 하는 부분 발견
                 tempAnswer = int(1e10)
-                checkValid = True # 예를 들어 2*2가 들어가지 못한다면 자동으로 3*3, 4*4, 5*5도 들어가지 못하므로 가지치기 위함.
-                
-                if one < 5:
-                    newArr = canUse(arr, 1, i, j)
-                    if newArr != None:
-                        newResult = checkArea(newArr, one + 1, two, three, four, five, i, j)
-                        if newResult != -1 and tempAnswer > newResult:
-                            tempAnswer = newResult
+                possibleMaxN = checkMaxN(arr, i, j)
+                numberOfOne = findOneNum(arr, i, j)
+
+                if five < 5 and possibleMaxN >= 5:
+                    newArr = getChangedArr(arr, 5, i, j)
+                    newResult = checkArea(newArr, one, two, three, four, five + 1, i, j)
+                    if newResult != -1 and tempAnswer > newResult:
+                        tempAnswer = newResult
                             
-                if two < 5:
-                    newArr = canUse(arr, 2, i, j)
-                    if newArr != None:
-                        newResult = checkArea(newArr, one, two + 1, three, four, five, i, j)
-                        if newResult != -1 and tempAnswer > newResult:
-                            tempAnswer = newResult
-                    else:
-                        checkValid = False
-                            
-                if three < 5 and checkValid:
-                    newArr = canUse(arr, 3, i, j)
-                    if newArr != None:
-                        newResult = checkArea(newArr, one, two, three + 1, four, five, i, j)
-                        if newResult != -1 and tempAnswer > newResult:
-                            tempAnswer = newResult
-                    else:
-                        checkValid = False
-                            
-                if four < 5 and checkValid:
-                    newArr = canUse(arr, 4, i, j)
-                    if newArr != None:
-                        newResult = checkArea(newArr, one, two, three, four + 1, five, i, j)
-                        if newResult != -1 and tempAnswer > newResult:
-                            tempAnswer = newResult
-                    else:
-                        checkValid = False
-                
-                if five < 5 and checkValid:
-                    newArr = canUse(arr, 5, i, j)
-                    if newArr != None:
-                        newResult = checkArea(newArr, one, two, three, four, five + 1, i, j)
-                        if newResult != -1 and tempAnswer > newResult:
-                            tempAnswer = newResult
-                
+                if four < 5 and possibleMaxN >= 4:
+                    newArr = getChangedArr(arr, 4, i, j)
+                    newResult = checkArea(newArr, one, two, three, four + 1, five, i, j)
+                    if newResult != -1 and tempAnswer > newResult:
+                        tempAnswer = newResult
+                        
+                if three < 5 and possibleMaxN >= 3:
+                    newArr = getChangedArr(arr, 3, i, j)
+                    newResult = checkArea(newArr, one, two, three + 1, four, five, i, j)
+                    if newResult != -1 and tempAnswer > newResult:
+                        tempAnswer = newResult
+                        
+                if two < 5 and possibleMaxN >= 2:
+                    newArr = getChangedArr(arr, 2, i, j)
+                    newResult = checkArea(newArr, one, two + 1, three, four, five, i, j)
+                    if newResult != -1 and tempAnswer > newResult:
+                        tempAnswer = newResult
+                        
+                if one < 5 and possibleMaxN >= 1:
+                    newArr = getChangedArr(arr, 1, i, j)
+                    newResult = checkArea(newArr, one + 1, two, three, four, five, i, j)
+                    if newResult != -1 and tempAnswer > newResult:
+                        tempAnswer = newResult
+                        
                 if tempAnswer == int(1e10):
                     return -1
                 else:
