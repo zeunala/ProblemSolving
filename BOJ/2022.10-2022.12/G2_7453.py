@@ -16,8 +16,9 @@
 * Fail/1st/00:09:05/TimeLimitExceeded
 - 오류를 수정하고 더 빠르게 계산할 방법을 고민해본다.
 * Fail/2nd/00:23:21/TimeLimitExceeded
+- defaultdict 대신 일반 딕셔너리를 이용하는 방법을 사용해본다.
+* Fail/3rd/00:33:28/RuntimeError
 '''
-from collections import defaultdict
 import sys
 
 N = int(sys.stdin.readline().rstrip())
@@ -25,8 +26,8 @@ A = []
 B = []
 C = []
 D = []
-dictAB = defaultdict(int) # key는 A와 B의 합, value는 그것의 개수
-dictCD = defaultdict(int) # key는 C와 D의 합, value는 그것의 개수
+dictAB = {} # key는 A와 B의 합, value는 그것의 개수
+dictCD = {} # key는 C와 D의 합, value는 그것의 개수
 answer = 0
 
 for i in range(N):
@@ -39,9 +40,16 @@ for i in range(N):
 # 가능한 합의 경우들을 저장
 for i in range(N):
     for j in range(N):
-        dictAB[A[i] + B[j]] += 1
-        dictCD[C[i] + D[j]] += 1
-
+        if A[i] + B[j] in dictAB:
+            dictAB[A[i] + B[j]] += 1
+        else:
+            dictAB[A[i] + B[j]] = 1
+            
+        if C[i] + D[j] in dictAB:
+            dictCD[C[i] + D[j]] += 1
+        else:
+            dictCD[C[i] + D[j]] = 1
+        
 for e in dictAB.keys():
     if -e in dictCD:
         answer += dictAB[e] * dictCD[-e] # dictAB + dictCD의 원소 합이 0이 되는 경우들을 찾는다.
