@@ -18,6 +18,8 @@
 * Fail/2nd/00:23:21/TimeLimitExceeded
 - defaultdict 대신 일반 딕셔너리를 이용하는 방법을 사용해본다.
 * Fail/3rd/00:33:28/RuntimeError
+- 오류를 수정하고 연산을 중복하지 않도록 수정하였다.
+* Fail/4th/00:34:29/TimeLimitExceeded
 '''
 import sys
 
@@ -40,15 +42,17 @@ for i in range(N):
 # 가능한 합의 경우들을 저장
 for i in range(N):
     for j in range(N):
-        if A[i] + B[j] in dictAB:
-            dictAB[A[i] + B[j]] += 1
+        sumAB = A[i] + B[j]
+        if sumAB in dictAB:
+            dictAB[sumAB] += 1
         else:
-            dictAB[A[i] + B[j]] = 1
+            dictAB[sumAB] = 1
             
-        if C[i] + D[j] in dictAB:
-            dictCD[C[i] + D[j]] += 1
+        sumCD = C[i] + D[j]
+        if sumCD in dictCD:
+            dictCD[sumCD] += 1
         else:
-            dictCD[C[i] + D[j]] = 1
+            dictCD[sumCD] = 1
         
 for e in dictAB.keys():
     if -e in dictCD:
