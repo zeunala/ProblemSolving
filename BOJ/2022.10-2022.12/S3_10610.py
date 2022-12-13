@@ -18,6 +18,9 @@ N을 입력받는다. N는 최대 10^5개의 숫자로 구성되어 있으며, 0
 * Fail/1st/00:14:58
 - 출력초과 오류가 나서 printMax함수를 수정하였다.
 * Fail/2nd/00:19:21
+- 숫자를 중간에 뺄 수 있는 것으로 잘못 이해하였다. 숫자를 내림차순으로 정렬하면 0은 자동으로 맨 끝에 오므로,
+숫자 내림차순으로 배치하고 0이 존재하고, 모든 숫자를 다 합쳤을 때 3의 배수인지만 체크하면 된다.
+* Pass/3rd/00:27:08
 '''
 import sys
 
@@ -37,43 +40,7 @@ for i in range(len(N)):
     digitArr[int(N[i])] += 1
     digitSum += int(N[i])
     
-if digitArr[0] == 0: # 0이 없을 경우, 즉 10의 배수가 될 수 없는 경우
+if digitArr[0] == 0 or digitSum % 3 != 0: # 0이 없을 경우(10의 배수X) 또는 3의 배수가 아닌 경우
     print(-1)
 else:
-    if digitSum % 3 == 0: # 숫자들 합이 3k꼴인 경우
-        pass
-    elif digitSum % 3 == 1: # 숫자들 합이 3k+1꼴인 경우
-        if digitArr[1] > 0:
-            digitArr[1] -= 1
-        elif digitArr[4] > 0:
-            digitArr[4] -= 1
-        elif digitArr[7] > 0:
-            digitArr[7] -= 1
-        else:
-            for i in range(2):
-                if digitArr[2] > 0:
-                    digitArr[2] -= 1
-                elif digitArr[5] > 0:
-                    digitArr[5] -= 1
-                elif digitArr[8] > 0:
-                    digitArr[8] -= 1
-    elif digitSum % 3 == 2: # 숫자들 합이 3k+2꼴인 경우
-        if digitArr[2] > 0:
-            digitArr[2] -= 1
-        elif digitArr[5] > 0:
-            digitArr[5] -= 1
-        elif digitArr[8] > 0:
-            digitArr[8] -= 1
-        else:
-            for i in range(2):
-                if digitArr[1] > 0:
-                    digitArr[1] -= 1
-                elif digitArr[4] > 0:
-                    digitArr[4] -= 1
-                elif digitArr[7] > 0:
-                    digitArr[7] -= 1
-            
-    if sum(digitArr[1:]) == 0: # 220같이 숫자들을 다 뺐을 때 0만 남는 경우가 있을 수 있다.
-        print(-1)
-    else:
-        print(getMaxNum(digitArr))
+    print(getMaxNum(digitArr))
