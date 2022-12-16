@@ -10,12 +10,30 @@ N개의 수의 범위는 1이상 n2이하 이다.
 
 - N의 범위가 작으므로 문제의 요구사항을 그대로 구현하면 되는 문제이다.
 * Fail/1st/00:09:05
+- 1부터 n*n까지로 중복없이 모든 수가 달라야 한다는 조건을 추가로 체크하도록 수정하였다.
+* Pass/2nd/00:13:23
 */
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class S5_15739 {
     public static boolean isMagicSquare(int[][] arr, int N) {
         int sumOfLine = N * (N * N + 1) / 2; // 각 가로, 세로, 대각선 수열의 합
+        Set<Integer> allNumber = new HashSet<>(); // 모든 숫자들
+
+        // 1~n*n까지 중복이 아닌지 체크
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (arr[i][j] < 1 || arr[i][j] > N * N) {
+                    return false;
+                }
+                allNumber.add(arr[i][j]);
+            }
+        }
+        if (allNumber.size() != N * N) {
+            return false;
+        }
 
         // 가로, 세로 체크
         for (int i = 0; i < N; i++) {
