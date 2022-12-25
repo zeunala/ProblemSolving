@@ -17,31 +17,37 @@ CD의 번호는 십억을 넘지 않는 양의 정수이다. 입력의 마지막
 - 집합 자료형을 이용하면 쉽겠으나 시간 초과의 위험이 있을 것으로 보인다.
 입력이 오름차순으로 주어지므로 포인터를 하나씩 두어 움직이는 방식으로 진행한다.
 * Fail/1st/00:05:47
+- 0 0이 주어질 때까지 테스트 케이스가 여러개 주어질 수 있음을 놓쳐 수정하였다.
+* Pass/2nd/00:07:26
+- 집합을 이용한 풀이로 다시 풀어봤으나 통과한것으로 보아 100만정도는 여유있는 것으로 보인다.
 '''
 import sys
 
-N, M = map(int, sys.stdin.readline().rstrip().split())
-arrN = []
-arrM = []
-
-for i in range(N):
-    arrN.append(int(sys.stdin.readline().rstrip()))
-for i in range(M):
-    arrM.append(int(sys.stdin.readline().rstrip()))
-sys.stdin.readline() # 마지막 0 0
+while True:
+    N, M = map(int, sys.stdin.readline().rstrip().split())
+    arrN = []
+    arrM = []
     
-idxN = 0
-idxM = 0
-answer = 0
+    if N == 0 and M == 0:
+        break
 
-while idxN < len(arrN) and idxM < len(arrM):
-    if arrN[idxN] == arrM[idxM]:
-        idxN += 1
-        idxM += 1
-        answer += 1
-    elif arrN[idxN] > arrM[idxM]:
-        idxM += 1
-    elif arrN[idxN] < arrM[idxM]:
-        idxN += 1
+    for i in range(N):
+        arrN.append(int(sys.stdin.readline().rstrip()))
+    for i in range(M):
+        arrM.append(int(sys.stdin.readline().rstrip()))
         
-print(answer)
+    idxN = 0
+    idxM = 0
+    answer = 0
+
+    while idxN < len(arrN) and idxM < len(arrM):
+        if arrN[idxN] == arrM[idxM]:
+            idxN += 1
+            idxM += 1
+            answer += 1
+        elif arrN[idxN] > arrM[idxM]:
+            idxM += 1
+        elif arrN[idxN] < arrM[idxM]:
+            idxN += 1
+            
+    print(answer)
