@@ -13,13 +13,15 @@
 - 여분 카약을 앞뒤로 밖에 빌려줄 수 없으므로 그리디 알고리즘으로 접근한다.
 우선 손상+여분 있는 팀을 제외하고, 손상된 팀/여분 팀으로 나누어 각각을 오름차순으로 정렬한 후 손상된 팀 앞번부터 찾는다.
 * Fail/1st/00:14:34
+- 두 배열에서 중복되는 걸 빼는 과정에서 breakArr에서 중복 제외한 이후의 배열을 기준으로 oneMoreArr을 수정한게 문제로 보여 수정하였다.
+* Pass/2nd/00:17:20
 '''
 N, S, R = map(int, input().split()) # N: 팀의 수, S: 손상 팀의 수, R: 여분 팀의 수
-breakArr = list(map(int, input().split()))
-oneMoreArr = list(map(int, input().split()))
+breakArrTemp = list(map(int, input().split()))
+oneMoreArrTemp = list(map(int, input().split()))
     
-breakArr = [e for e in breakArr if e not in oneMoreArr] # 여분 팀의 수와 중복된 걸 뺌
-oneMoreArr = [e for e in oneMoreArr if e not in breakArr] # 손상 팀의 수와 중복된 걸 뺌
+breakArr = [e for e in breakArrTemp if e not in oneMoreArrTemp] # 여분 팀의 수와 중복된 걸 뺌
+oneMoreArr = [e for e in oneMoreArrTemp if e not in breakArrTemp] # 손상 팀의 수와 중복된 걸 뺌
 breakArr.sort()
 oneMoreArr.sort()
 
