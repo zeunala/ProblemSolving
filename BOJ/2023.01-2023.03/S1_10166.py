@@ -20,6 +20,8 @@ D가 6일 때는 0/6, 1/6, 2/6, 3/6, 4/6, 5/6으로 나타낼 수 있다.
 * Fail/2nd/00:28:26
 - 최적화가 잘못된 부분이 있어 수정하였다.
 * Fail/3rd/00:40:44
+- 메모리를 더 최적화하였다.
+* Pass/4th/00:43:21
 '''
 import math
 
@@ -29,7 +31,7 @@ def getDivTuple(a, b): # a/b의 분수를 약분해서 (a, b)의 형태로 반�
 
 D1, D2 = map(int, input().split())
 answer = 1 # 0인 지점을 미리 하나 센다.
-otherCase = set()
+otherCase = [[False for _ in range(D2 // 2 + 1)] for _ in range(D2 // 2 + 1)] # otherCase[a][b]: a / b가 이미 등장했는지
 
 for i in range(D1, D2 + 1):
     for j in range(1, i):
@@ -38,9 +40,9 @@ for i in range(D1, D2 + 1):
         
         if tempResult[1] != i:
             # i는 D2안에 있으므로 D2와 비교할 필요는 없다.
-            if tempResult[1] >= D1 or tempResult in otherCase:
+            if tempResult[1] >= D1 or otherCase[tempResult[0]][tempResult[1]]:
                 continue
-            otherCase.add(tempResult)
+            otherCase[tempResult[0]][tempResult[1]] = True
         answer += 1
         
 print(answer)
