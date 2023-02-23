@@ -18,6 +18,8 @@ D가 6일 때는 0/6, 1/6, 2/6, 3/6, 4/6, 5/6으로 나타낼 수 있다.
 모든 경우의 수를 저장하지 말고, 그냥 약분이 되는 상황에서 분모가 D1~D2 범위안에 있으면 총 개수에 포함을 시키지 않으면 된다.
 그리고 약분이 됨에도 총 개수에 포함되는 것들만 따로 모으면 된다. 예를 들어 D가 4~6일 때 2/4와 3/6 모두 세면 안되기 때문이다.
 * Fail/2nd/00:28:26
+- 최적화가 잘못된 부분이 있어 수정하였다.
+* Fail/3rd/00:40:44
 '''
 import math
 
@@ -31,13 +33,14 @@ otherCase = set()
 
 for i in range(D1, D2 + 1):
     for j in range(1, i):
-        # j / i 꼴의 분수가 나온는데, 약분했을 때 분모가 D1~D2가 아니면 총 개수가 합산한다.
+        # j / i 꼴의 분수가 나오는데, 약분했을 때 분모가 D1~D2가 아니면 총 개수가 합산한다.
         tempResult = getDivTuple(j, i)
         
-        # i는 D2안에 있으므로 D2와 비교할 필요는 없다.
-        if (tempResult[1] != i and tempResult[1] >= D1) or tempResult in otherCase:
-            continue
-        otherCase.add(tempResult)
+        if tempResult[1] != i:
+            # i는 D2안에 있으므로 D2와 비교할 필요는 없다.
+            if tempResult[1] >= D1 or tempResult in otherCase:
+                continue
+            otherCase.add(tempResult)
         answer += 1
         
 print(answer)
