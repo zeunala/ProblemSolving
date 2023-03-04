@@ -15,9 +15,11 @@
 반드시 이동 경로는 싸이클의 형태가 된다.
 전체 지도를 탐색하여 총 몇 개의 묶음이 나오는지만 판단하면 된다.
 * Fail/1st/00:13:26
+- 반드시 싸이클이 된다는 보장이 없다. "(싸이클)<-<-"의 형태도 가능하기 때문이다.
+싸이클 안에 선물을 두면 해당 경로 어디든지 접근할 수 있는건 동일하나, 묶음의 개수를 세는 과정에서 주의하도록 한다.
+* Pass/2nd/00:25:58
 '''
 import sys
-from collections import deque
 
 N, M = map(int, sys.stdin.readline().rstrip().split())
 mapArr = []
@@ -36,13 +38,21 @@ for i in range(N):
         if visited[i][j]:
             continue
         
-        # 방문하지 않은 칸이라면 지금부터는 한 덩이를 세는 과정임
-        answer += 1
+        # 현재 탐색하는 곳에서 방문하는 위치들
+        currentPath = set()
         
         # 방문하지 않은 각 칸이 나올 때까지 계속 이동하며 탐색
         currentI, currentJ = i, j
-        while visited[currentI][currentJ] == False:
+        while True:
+            if visited[currentI][currentJ]:
+                # 현재 탐색하는 곳 내에서 싸이클이 이루어지는 경우 한 묶음이 추가된다.
+                # "(싸이클)<-<-" 과 같이 그 전에 이미 탐색한 싸이클을 향하는 경로에 대해서는 한 묶음이 추가되지 않는다.
+                if (currentI, currentJ) in currentPath:
+                    answer += 1
+                break
+                
             visited[currentI][currentJ] = True
+            currentPath.add((currentI, currentJ))
             
             currentPos = mapArr[currentI][currentJ] # 현재 위치한 알파벳
             currentI += di[currentPos]
