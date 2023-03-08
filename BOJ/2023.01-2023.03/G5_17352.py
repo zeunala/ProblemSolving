@@ -12,6 +12,8 @@
 '''
 - 유니온 파인드를 이용하여 풀 수 있는 문제이다.
 * Fail/1st/00:18:07
+- 마지막에 섬들이 연결되어 있는지 체크하는 과정에서 getParent함수를 쓰지 않은 문제를 수정하였다.
+* Fail/2nd/00:19:27
 '''
 import sys
 
@@ -35,7 +37,7 @@ for i in range(N - 2):
 # 1번이 끊긴 경우 모든 섬에서 parent[i] = 1이다.
 target = 1
 for i in range(2, N + 1):
-    if parent[i] == i:
+    if getParent(parent, i) == i:
         target = i
         break
     
