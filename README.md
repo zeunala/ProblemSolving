@@ -1,5 +1,8 @@
 # 알고리즘 문제풀이
-주기적으로 알고리즘 문제를 푸는 것을 목표로 하고 있습니다.  
+주기적으로 알고리즘 문제를 푸는 것을 목표로 하고 있습니다.
+
+[![Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=zeunala)](https://solved.ac/zeunala/)
+
 기본적으로 다음 양식에 따라서 작성하고 있습니다.  
 
 >파일명: (문제난이도)_(문제번호/문제이름).(cpp/py 등)  
