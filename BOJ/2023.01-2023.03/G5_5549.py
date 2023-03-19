@@ -15,6 +15,8 @@
 '''
 - 각 구역별로 정글/바다/얼음의 수에 대한 누적 합을 구한다.
 * Fail/1st/00:20:39
+- 중간 테스트용으로 작성했던 print문을 삭제하였다.
+* Pass/2nd/00:21:34
 '''
 import sys
 
@@ -29,7 +31,6 @@ arrJ = [[0 for _ in range(N)] for _ in range(M)]
 arrO = [[0 for _ in range(N)] for _ in range(M)]
 arrI = [[0 for _ in range(N)] for _ in range(M)]
 
-print(arr)
 for i in range(M):
     for j in range(N):
         if arr[i][j] == "J":
