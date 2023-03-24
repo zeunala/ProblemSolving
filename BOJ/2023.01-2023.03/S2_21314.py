@@ -16,6 +16,9 @@
 반면 가장 작은 십진수를 만드려면 맨 앞부터 최대한 M만을 포함해서 1이 앞으로 가도록 해야한다.
 예를 들어, MKKMMK이면 가장 큰 십진수는 MK/K/MMK, 가장 작은 십진수는 M/K/K/MM/K 이다.
 * Fail/1st/00:22:36
+- 가장 큰 십진수를 구할 때 마지막에 K로 끝나지 않으면 M을 각각 나눠야 최댓값이 나온다.
+예를 들어 MKMMM의 경우 MK/M/M/M과 같이 나눠야 한다.
+* Fail/2nd/00:25:16
 '''
 def mnumToIntstring(num): # 민겸 숫자를 십진수 문자열로 변환해서 리턴 (ex. "MK" -> "50")
     if len(num) == 0:
@@ -42,7 +45,7 @@ for i in range(len(target)):
         maxScanStart = i + 1
         
     if target[i] == "M" and i == len(target) - 1:
-        minValue += mnumToIntstring(target[minScanStart:i + 1])
+        minValue += ("1" * (i - minScanStart + 1))
         maxValue += mnumToIntstring(target[maxScanStart:i + 1])
         
 print(maxValue)
