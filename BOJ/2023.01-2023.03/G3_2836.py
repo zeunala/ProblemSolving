@@ -15,6 +15,8 @@
 이때, 2<-4, 3<-5와 같이 돌아가야 하는 거리가 겹칠 경우 둘을 한 번에 태웠다가 돌아가면 되므로 하나로 합칠 수 있다.
 정리하면, 뒤로 가는 경우만 세고 중복되는 거리를 합쳐서 M + (총 뒤로 가야 하는 거리) * 2가 최솟값이 된다.
 * Fail/1st/00:14:28
+- 되돌아가는 지점이 겹치는 경우 끝나는 지점이 현재보다 더 멀리 있는 경우에만 갱신하도록 수정하였다.
+* Pass/2nd/00:18:23
 '''
 import sys
 
@@ -36,7 +38,8 @@ lastEnd = 0
 for (start, end) in goBack:
     # 되돌아 가는 지점이 겹치는 경우
     if lastEnd >= start:
-        lastEnd = end
+        if lastEnd < end:
+            lastEnd = end
         continue
     
     answer += (lastEnd - lastStart) * 2
