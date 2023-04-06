@@ -13,6 +13,8 @@
 '''
 - 문제의 요구사항을 그대로 구현하면 된다. 문서가 최대 1000페이지까지이므로 출력여부를 각 페이지별로 True/False로 저장한다.
 * Fail/1st/00:07:12/RuntimeError
+- 한 페이지만 인쇄하는 경우 체크조건을 수정하고 범위도 체크하도록 하였다.
+* Pass/2nd/00:11:04
 '''
 import sys
 
@@ -25,7 +27,9 @@ while True:
     
     pages = sys.stdin.readline().rstrip().split(",")
     for page in pages:
-        if len(page) == 1: # 한 페이지만 인쇄하는 경우 (ex. 5)
+        if "-" not in page: # 한 페이지만 인쇄하는 경우 (ex. 5)
+            if int(page) > N:
+                continue
             needPrint[int(page)] = True
         else: # 구간으로 주어지는 경우 (ex. 5-6)
             start, end = map(int, page.split("-"))
