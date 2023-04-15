@@ -17,12 +17,14 @@ Ai는 1, 2, 3 중 하나이며, An은 항상 1이다.
 맨 앞에 있는 카드가 내려놓이기 전까지 그 뒤에 2번 기술을 쓰는 카드들이 놓여지며,
 맨 앞에 있는 카드가 놓여졌다면 그 다음으로 1번 기술을 쓰는 카드가 맨 앞에 오며 처음부터 다시 시작한다.
 * Fail/1st/00:27:18/TimeLimitExceeded
+- 순회횟수를 최소화하기 위해 최적화를 하였다.
+* Pass/2nd/00:35:58
+- 기존 코드에서 arr[i:] 슬라이싱 코드가 원소 개수만큼의 시간복잡도를 가져 이로 인해 시간초과가 발생한 것으로 보인다.
 '''
 import sys
 
 N = int(sys.stdin.readline().rstrip())
 arr = list(map(int, sys.stdin.readline().rstrip().split()))
-
 answerFront = []
 answerBack = []
 
@@ -31,18 +33,15 @@ for i in range(N):
     if arr[i] == 3:
         answerBack.append(N - i)
 
-i = 0
-while i < N:
-    # 1번 기술을 처음으로 쓴 카드를 맨 앞에 둔다.
-    firstIdx = arr[i:].index(1) + i
-    answerFront.append(N - firstIdx)
-
-    # 2번 기술을 쓴 나머지 카드들을 그 카드 뒤에 놓는다.
-    for i in range(i, firstIdx):
-        if arr[i] == 2:
-            answerFront.append(N - i)
-            
-    i = firstIdx + 1
+tempStack = []
+for i in range(N):
+    if arr[i] == 2:
+        tempStack.append(N - i)
+        
+    if arr[i] == 1:
+        answerFront.append(N - i)
+        answerFront.extend(tempStack)
+        tempStack = []
 
 # 3번 기술을 쓴 카드들을 뒤집어 뒤에 놓는다. (먼저 3번 기술을 쓴 카드가 맨 뒤에 위치해야 하기 때문이다)
 answerFront.extend(list(reversed(answerBack)))
