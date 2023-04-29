@@ -20,6 +20,8 @@
 '''
 - N, M의 범위가 작으므로 문제의 요구사항을 그대로 구현한다.
 * Fail/1st/00:09:46/RuntimeError
+- 모든 사람이 틀렸을 때 playerScore가 완전히 빈 상태라 오류가 발생하는 문제를 수정하였다.
+* Pass/2nd/00:12:16
 '''
 import sys
 from collections import defaultdict
@@ -31,10 +33,13 @@ playerScore = defaultdict(int) # playerScore[i]는 i번 응시자의 점수
 for i in range(M):
     nextLine = list(sys.stdin.readline().rstrip().split())
     currentNo = int(nextLine[0]) # 응시자 번호
+    currentScore = 0
     
     for i in range(N):
         if nextLine[i + 1] == "O":
-            playerScore[currentNo] += scoreArr[i]
+            currentScore += scoreArr[i]
+    
+    playerScore[currentNo] = currentScore
             
 # 최대 점수의 응시자 번호를 구하되 수험 번호 작은 것이 우선
 maxScore = max(playerScore.values())
