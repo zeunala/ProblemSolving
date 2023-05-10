@@ -16,6 +16,8 @@ S의 원소는 오름차순으로 주어진다.
 '''
 - 파이썬의 combinations로 간단하게 계산할 수 있다.
 * Fail/1st/00:04:50
+- 테스트 케이스 사이에 빈 줄을 하나 출력하라는 조건을 놓쳐 관련 코드를 추가하였다.
+* Pass/2nd/00:05:20
 '''
 import sys
 from itertools import combinations
@@ -31,3 +33,4 @@ while True:
         for e in case:
             print(e, end = " ")
         print()
+    print()
