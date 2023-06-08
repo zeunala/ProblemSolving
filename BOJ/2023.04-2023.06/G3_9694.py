@@ -17,33 +17,33 @@ N(N ≤ 20)은 관계의 개수를 의미하며, M(5 ≤M≤ 20)은 정치인의
 '''
 - 다익스트라 알고리즘을 이용하여 풀 수 있다.
 * Fail/1st/00:17:18
+- 알고리즘 코드를 수정하였다.
+* Pass/2nd/00:23:31
 '''
-from collections import deque
+import heapq
 
 def solution(graph):
     M = len(graph)
     INF = 10 ** 10
     
     minArr = [INF] * M # minArr[i]는 i번 정치인까지 가는 최소 비용
-    visited = [False] * M
-    tempQueue = deque()
+    tempHeap = [] # (minArr[i], i)의 최소힙
     parent = [None] * M # parent[i]는 최단경로로 이동했을 때 i직전에 이동하는 번호
     
     minArr[0] = 0
-    visited[0] = True
-    tempQueue.append(0)
+    heapq.heappush(tempHeap, (0, 0))
     
-    while tempQueue:
-        temp = tempQueue.popleft()
+    while tempHeap:
+        cost, start = heapq.heappop(tempHeap)
+        if minArr[start] < cost:
+            continue
         
-        for next in graph[temp].keys():
-            if minArr[next] > minArr[temp] + graph[temp][next]:
-                minArr[next] = minArr[temp] + graph[temp][next]
-                parent[next] = temp
+        for next in graph[start].keys():
+            if minArr[next] > minArr[start] + graph[start][next]:
+                minArr[next] = minArr[start] + graph[start][next]
+                parent[next] = start
                 
-                if visited[next] == False:
-                    visited[next] = True
-                    tempQueue.append(next)
+                heapq.heappush(tempHeap, (minArr[next], next))
     
     if minArr[M - 1] == INF:
         return "-1"
