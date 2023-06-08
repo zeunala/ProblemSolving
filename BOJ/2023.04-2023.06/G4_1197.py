@@ -15,6 +15,8 @@
 '''
 - 가중치가 작은 것부터 나열하고, 사이클이 생기지 않는 범위에서 그리디 알고리즘으로 간선들을 취한다.
 * Fail/1st/00:15:11
+- union 함수를 수정하였다.
+* Pass/2nd/00:18:29
 '''
 import sys
 sys.setrecursionlimit(100000)
@@ -26,10 +28,12 @@ def findParent(parent, i):
     return parent[i]
     
 def union(parent, a, b):
-    if a > b:
-        parent[a] = parent[b]
+    parentANum = findParent(parent, a)
+    parentBNum = findParent(parent, b)
+    if parentANum > parentBNum:
+        parent[parentANum] = parentBNum
     else:
-        parent[b] = parent[a]
+        parent[parentBNum] = parentANum
 
 V, E = map(int, sys.stdin.readline().rstrip().split())
 graph = [] # (가중치, 시작점, 도착점)으로 구성. 시작점의 번호가 더 작도록 한다.
