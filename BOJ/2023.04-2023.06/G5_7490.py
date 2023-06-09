@@ -12,6 +12,8 @@
 '''
 - N의 범위가 작으므로 +, -, 공백 중에서 가능한 모든 경우의 수를 탐색한다. (최대 3^8가지)
 * Fail/1st/00:08:57
+- 결과들을 ASCII 순서에 따라 정렬하도록 코드를 추가하였다.
+* Pass/2nd/00:13:44
 '''
 from itertools import product
 
@@ -25,12 +27,16 @@ def getResult(N, case): # 1+2-3과 같은 수식을 얻어 리턴
 def isValid(N, case):
     return eval(getResult(N, case).replace(" ", "")) == 0
     
-
 T = int(input())
 for i in range(T):
     N = int(input())
     
+    answer = []
     for case in product("+- ", repeat=N-1):
         if isValid(N, case):
-            print(getResult(N, case))
+            answer.append(getResult(N, case))
+    answer.sort()
+    
+    for e in answer:
+        print(e)
     print()
