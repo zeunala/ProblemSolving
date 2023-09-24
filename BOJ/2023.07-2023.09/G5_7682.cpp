@@ -12,28 +12,43 @@
 - 1번째 조건으로 O또는 X가 승리하거나, 게임판이 가득 차야한다.
 2번째 조건으로 O가 승리하면 O와 X의 수가 같아야 하고, X가 승리하거나 무승부이면 X가 O보다 1개 많아야 한다.
 * Fail/1st/00:38:19
+- O또는 X가 동시에 승리하면 안된다는 조건을 추가하였다.
+* Fail/2nd/00:41:18
 */
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-int findWinner(string map[][3], int N = 3) { // O 승리 시 1, X 승리 시 2, 무승부 시 0, 이때 게임판이 가득 차면 -1
+int findWinner(string map[][3], int N = 3) { // O 승리 시 1, X 승리 시 2, 무승부 시 0, 이때 게임판이 가득 차면 -1, 유효하지 않으면 -2
+    bool winO = false;
+    bool winX = false;
+
     for (int i = 0; i < N; i++) {
         if ((map[i][0] == "O" && map[i][1] == "O" && map[i][2] == "O")
         || (map[0][i] == "O" && map[1][i] == "O" && map[2][i] == "O")) {
-            return 1;
+            winO = true;
         } else if ((map[i][0] == "X" && map[i][1] == "X" && map[i][2] == "X")
         || (map[0][i] == "X" && map[1][i] == "X" && map[2][i] == "X")) {
-            return 2;
+            winX = true;
         }
     }
 
     if ((map[0][0] == "O" && map[1][1] == "O" && map[2][2] == "O")
     || (map[0][2] == "O" && map[1][1] == "O" && map[2][0] == "O")) {
-        return 1;
+        winO = true;
     } else if ((map[0][0] == "X" && map[1][1] == "X" && map[2][2] == "X")
     || (map[0][2] == "X" && map[1][1] == "X" && map[2][0] == "X")) {
+        winX = true;
+    }
+
+    if (winO && winX) {
+        return -2;
+    }
+    if (winO) {
+        return 1;
+    }
+    if (winX) {
         return 2;
     }
 
