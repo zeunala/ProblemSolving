@@ -14,6 +14,8 @@
 * Fail/1st/00:38:19
 - O또는 X가 동시에 승리하면 안된다는 조건을 추가하였다.
 * Fail/2nd/00:41:18
+- 빠진 코드를 수정하였다.
+* Fail/3rd/00:42:24
 */
 #include <iostream>
 #include <string>
@@ -97,6 +99,8 @@ int main(void) {
             } else {
                 cout << "invalid" << endl;
             }
+        } else if (winner == -2) { // 유효하지 않은 경우
+            cout << "invalid" << endl;
         } else { // X가 승리하면 X가 O보다 1개 더 많아야 한다.
             if (countChar(map, "O") + 1 == countChar(map, "X")) {
                 cout << "valid" << endl;
