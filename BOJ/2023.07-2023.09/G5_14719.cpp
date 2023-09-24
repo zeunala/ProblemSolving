@@ -13,6 +13,8 @@
 - 1층부터 차례대로, 막혀있는 두 블록 사이에 존재하는 빈 공간의 개수를 체크한다.
 예를 들어 OO..O이면 2개, O...O이면 3개, O.O..이면 1개이다.
 * Fail/1st/00:25:12/RuntimeError
+- 입력 순서가 잘못되어 수정하였다.
+* Pass/2nd/00:29:41
 */
 #include <iostream>
 
@@ -20,9 +22,9 @@ using namespace std;
 
 int main(void) {
     int H, W; // H: 세로, W: 가로
-    int *arr = new int[W];
-
     cin >> H >> W;
+
+    int *arr = new int[W];
     for (int i = 0; i < W; i++) {
         cin >> arr[i];
     }
